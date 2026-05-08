@@ -1,0 +1,943 @@
+Notebook[{Cell[
+CellGroupData[{Cell[
+BoxData[{RowBox[{"Print","[","\"Wolfram Language ready!\"","]"}],"\n",RowBox[
+{RowBox[{"Print","[","$Version","]"}],"\n"}]}],"Input",CellLabel -> "In[25]:= ",ExpressionUUID -> "0697de29-c865-477b-844d-efc437e6c52a"],Cell[
+BoxData[
+"\"Wolfram Language ready!\"",StandardForm],"Print",ExpressionUUID -> "fbb52e69-7a88-49e4-bbf8-8052ad2e6aa8"],Cell[
+BoxData[
+"\"14.3.0 for Linux x86 (64-bit) (July 8, 2025)\"",StandardForm],"Print",ExpressionUUID -> "7f5bc1e3-26b6-42fd-8817-f8066e1a37f9"]},
+Open],ExpressionUUID -> "a339c4a5-0555-419e-b543-2753240c5edb"],Cell[
+TextData[{"1",StyleBox[
+RowBox[{"."," "}]],"The"," ","function"," ","Iinput","[","t",StyleBox[RowBox[{"]"," "}]],"returns"," ","the"," ","input"," ","current"," ","depending"," ","on"," ","time",".","\n","\n","At"," ","t",StyleBox[
+RowBox[{" ","="," "}]],"0",".","03"," ","the"," ","condition"," ","0",".","05",StyleBox[
+RowBox[{" ","\[LessEqual]"," "}]],"t",StyleBox[RowBox[{" ","\[LessEqual]"," "}]],"0",".","4"," ","is"," ","false",StyleBox[
+RowBox[{","," "}]],"so"," ","the"," ","function"," ","returns"," ","0"," ","nA",".","\n","\n","At"," ","t",StyleBox[
+RowBox[{" ","="," "}]],"0",".","2"," ","the"," ","condition"," ","is"," ","true",StyleBox[
+RowBox[{","," "}]],"so"," ","the"," ","function"," ","returns"," ","18"," ","nA",".","\n","\n","At"," ","t",StyleBox[
+RowBox[{" ","="," "}]],"0",".","5"," ","the"," ","condition"," ","is"," ","again"," ","false",StyleBox[
+RowBox[{","," "}]],"so"," ","the"," ","current"," ","returns"," ","0"," ","nA",".","\n","\n","2",StyleBox[
+RowBox[{"."," "}]],"The",StyleBox[RowBox[{" ",":="," "}]],"operator"," ","is"," ","used"," ","because"," ","it"," ","creates"," ","a"," ","delayed"," ","assignment",StyleBox[
+RowBox[{"."," "}]],"\n","This"," ","means"," ","the"," ","expression"," ","is"," ","evaluated"," ","every"," ","time"," ","the"," ","function"," ","is"," ","called",StyleBox[
+RowBox[{"."," "}]],"\n","If"," ","we"," ","used",StyleBox[RowBox[{" ","=,"," "}]],"the"," ","function"," ","would"," ","evaluate"," ","immediately"," ","once"," ","and"," ","would"," ","not"," ","\n","correctly"," ","update"," ","when"," ","different"," ","time"," ","values"," ","are"," ","passed"," ","into"," ","Iinput","[","t","].","\n"}],
+"Text",ExpressionUUID -> "1e216c3d-3059-41cd-ad18-213bc0c3e3e8"],Cell[
+CellGroupData[
+{Cell[
+BoxData[{StyleBox[RowBox[{RowBox[{"(*"," ",RowBox[{"\[HorizontalLine]\[HorizontalLine]"," ","Parameters"," ","\[HorizontalLine]\[HorizontalLine]"}]," ","*)"}],"\n",RowBox[
+{RowBox[{"tau","    ","="," ","0.020"}],";"}],"   ",RowBox[{"(*"," ",RowBox[{RowBox[
+{"20"," ","ms"," ","membrane"," ","time"," ","constant"}],","," ",RowBox[{"in"," ","seconds"}]}]," ","*)"}]}]],"\n",RowBox[
+{RowBox[{RowBox[{"Vrest","  ","="," ",RowBox[{"-","0.070"}]}],";"}],"  ",RowBox[{"(*"," ",RowBox[
+{RowBox[{RowBox[{"-","70"}]," ","mV"}],","," ",RowBox[{"in"," ","volts"}]}]," ","*)"}]}],"\n",RowBox[
+{RowBox[{RowBox[{"Vthresh"," ","="," ",RowBox[{"-","0.055"}]}],";"}]," ",RowBox[{"(*"," ",RowBox[
+{RowBox[{"-","55"}]," ","mV"}]," ","*)"}]}],"\n",RowBox[{RowBox[{RowBox[{"Vreset","  ","="," ",RowBox[
+{"-","0.075"}]}],";"}]," ",RowBox[{"(*"," ",RowBox[{RowBox[{"-","75"}]," ","mV"}]," ","*)"}]}],"\n",RowBox[
+{RowBox[{RowBox[{"R","      ","="," ",RowBox[{"10","^","7"}]}],";"}],"    ",RowBox[
+{"(*"," ",RowBox[{"10"," ","M\[CapitalOmega]"," ","in"," ","ohms"}]," ","*)"}]}],"\n",RowBox[
+{RowBox[{RowBox[{"Iinput"," ","="," ",RowBox[{"2","*",RowBox[{"10","^",RowBox[{"-","9"}]}]}]}],";"}]," ",RowBox[
+{"(*"," ",RowBox[{"2"," ","nA"," ","in"," ","amperes"}]," ","*)"}]}],RowBox[{"\n","\n"}],StyleBox[
+RowBox[{RowBox[{"(*"," ",RowBox[{"\[HorizontalLine]\[HorizontalLine]"," ","Spike"," ","tracking"," ",RowBox[
+{"(",RowBox[{RowBox[{"must"," ","be"," ","plain"," ","variables"}],","," ",RowBox[
+{"NOT"," ","DiscreteVariables"}]}],")"}]," ","\[HorizontalLine]\[HorizontalLine]"}]," ","*)"}],"\n",RowBox[
+{RowBox[{"spikeCount"," ","="," ","0"}],";"}]}]],"\n",RowBox[{RowBox[{"spikeTimes"," ","="," ",RowBox[
+{"{","}"}]}],";"}],RowBox[{"\n","\n"}],StyleBox[RowBox[{RowBox[{"(*"," ",RowBox[{"\[HorizontalLine]\[HorizontalLine]"," ","Solve"," ","\[HorizontalLine]\[HorizontalLine]"}]," ","*)"}],"\n",RowBox[
+{RowBox[{"sol"," ","="," ",RowBox[{"NDSolve","[","\n","  ",RowBox[{RowBox[{"{","\n","    ",RowBox[
+{RowBox[{RowBox[{"tau"," ","*"," ",RowBox[{RowBox[{"V","'"}],"[","t","]"}]}]," ","=="," ",RowBox[
+{RowBox[{"-",RowBox[{"(",RowBox[{RowBox[{"V","[","t","]"}]," ","-"," ","Vrest"}],")"}]}]," ","+"," ",RowBox[
+{"R"," ","*"," ","Iinput"}]}]}],",","\n","    ",RowBox[{RowBox[{"V","[","0","]"}]," ","=="," ","Vrest"}],",","\n","    ",RowBox[
+{"WhenEvent","[",RowBox[{RowBox[{RowBox[{"V","[","t","]"}]," ","\[GreaterEqual]"," ","Vthresh"}],",","\n","      ",RowBox[
+{"{","\n","        ",RowBox[{RowBox[{"spikeCount","++"}],",","\n","        ",RowBox[
+{"AppendTo","[",RowBox[{"spikeTimes",","," ","t"}],"]"}],",","\n","        ",RowBox[
+{RowBox[{"V","[","t","]"}]," ","\[Rule]"," ","Vreset"}]}],"\n","      ","}"}]}],"\n","    ","]"}]}],"\n","  ","}"}],",","\n","  ","V",",","\n","  ",RowBox[
+{"{",RowBox[{"t",","," ","0",","," ","0.5"}],"}"}]}],"\n","]"}]}],";"}]}]],RowBox[
+{"\n","\n"}],StyleBox[RowBox[{RowBox[{"(*"," ",RowBox[{"\[HorizontalLine]\[HorizontalLine]"," ","Results"," ","\[HorizontalLine]\[HorizontalLine]"}]," ","*)"}],"\n",RowBox[
+{RowBox[{"Print","[",RowBox[{"\"Neuron fired \"",","," ","spikeCount",","," ","\" spikes\""}],"]"}],";"}]}]],"\n",RowBox[
+{RowBox[{"Print","[",RowBox[{"\"Spike times (s): \"",","," ","spikeTimes"}],"]"}],";"}],RowBox[
+{"\n","\n"}],StyleBox[RowBox[{RowBox[{"(*"," ",RowBox[{"\[HorizontalLine]\[HorizontalLine]"," ","Plot"," ","\[HorizontalLine]\[HorizontalLine]"}]," ","*)"}],"\n",RowBox[
+{"Plot","[","\n","  ",RowBox[{RowBox[{"Evaluate","[",RowBox[{RowBox[{"V","[","t","]"}]," ","/."," ","sol"}],"]"}],",","\n","  ",RowBox[
+{"{",RowBox[{"t",","," ","0",","," ","0.5"}],"}"}],",","\n","  ",RowBox[{"PlotLabel"," ","\[Rule]"," ","\"LIF Neuron \[LongDash] Membrane Potential\""}],",","\n","  ",RowBox[
+{"AxesLabel"," ","\[Rule]"," ",RowBox[{"{",RowBox[{"\"Time (s)\"",","," ","\"V (V)\""}],"}"}]}],",","\n","  ",RowBox[
+{"PlotStyle"," ","\[Rule]"," ",RowBox[{"{",RowBox[{"Blue",","," ","Thick"}],"}"}]}],",","\n","  ",RowBox[
+{"Epilog"," ","\[Rule]"," ",RowBox[{"{","\n","    ",RowBox[{"Red",","," ","Dashed",",","\n","    ",RowBox[
+{"Line","[",RowBox[{"{",RowBox[{RowBox[{"{",RowBox[{"0",","," ","Vthresh"}],"}"}],","," ",RowBox[
+{"{",RowBox[{"0.5",","," ","Vthresh"}],"}"}]}],"}"}],"]"}],",","\n","    ",RowBox[
+{"(*"," ",RowBox[{"Spike"," ","markers"}]," ","*)"}],"\n","    ",RowBox[{"PointSize","[","0.015","]"}],","," ","Red",",","\n","    ",RowBox[
+{"Point","[",RowBox[{RowBox[{RowBox[{"{",RowBox[{"#",","," ","Vthresh"}],"}"}]," ","&"}]," ","/@"," ","spikeTimes"}],"]"}]}],"\n","  ","}"}]}],",","\n","  ",RowBox[
+{"GridLines"," ","\[Rule]"," ","Automatic"}],",","\n","  ",RowBox[{"PlotRange"," ","\[Rule]"," ","All"}]}],"\n","]"}]}]]}],
+"Input",CellLabel -> "In[27]:= ",ExpressionUUID -> "b7f1725c-a0a5-437f-b435-2fe1729e7bb1"],Cell[
+BoxData[
+InterpretationBox[RowBox[{"\"Neuron fired \"","\[InvisibleSpace]","15","\[InvisibleSpace]","\" spikes\""}],
+SequenceForm["Neuron fired ",15," spikes"],Editable -> False],StandardForm],"Print",
+ExpressionUUID -> "bd1573f3-025c-4d90-a6c7-de2e60ec1181"],Cell[
+BoxData[InterpretationBox[
+RowBox[{"\"Spike times (s): \"","\[InvisibleSpace]",RowBox[{"{",RowBox[{"0.02772591612171938`",",","0.05991471833510795`",",","0.09210352054849631`",",","0.12429232276188494`",",","0.15648112497527367`",",","0.18866992718866205`",",","0.22085872940205112`",",","0.25304753161543947`",",","0.2852363338288278`",",","0.31742513604221617`",",","0.3496139382556059`",",","0.3818027404689964`",",","0.4139915426823869`",",","0.44618034489577735`",",","0.4783691471091679`"}],"}"}]}],
+SequenceForm["Spike times (s): ",{0.02772591612171938`,0.05991471833510795`,0.09210352054849631`,0.12429232276188494`,0.15648112497527367`,0.18866992718866205`,0.22085872940205112`,0.25304753161543947`,0.2852363338288278`,0.31742513604221617`,0.3496139382556059`,0.3818027404689964`,0.4139915426823869`,0.44618034489577735`,0.4783691471091679`}],
+Editable -> False],StandardForm],"Print",ExpressionUUID -> "4c2a3837-37e1-4622-880a-4201e9dc8e2e"],Cell[
+BoxData[
+GraphicsBox[{{{{{},{},TagBox[{Directive[Opacity[1.`],AbsoluteThickness[2],RGBColor[
+0,0,1],Thickness[Large]],LineBox[CompressedData["1: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"]]},
+Function[Annotation[Slot[1],"Charting`Private`Tag#1"]]]}},{}}},{DisplayFunction -> Identity,RuleDelayed[
+PlotInteractivity,True],DisplayFunction -> Identity,Ticks -> {Automatic,Automatic},AxesOrigin -> {0,-0.05388932557418032`},FrameTicks -> {{Automatic,Automatic},{Automatic,Automatic}},GridLines -> {Automatic,Automatic},RuleDelayed[
+PlotInteractivity,True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},DisplayFunction -> Identity,PlotRangePadding -> {{Scaled[
+0.02`],Scaled[0.02`]},{Scaled[0.05`],Scaled[0.05`]}},PlotRangeClipping -> True,ImagePadding -> All,RuleDelayed[
+PlotInteractivity,True],DisplayFunction -> Identity,RuleDelayed[PlotInteractivity,
+True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},AspectRatio -> NCache[Power[
+GoldenRatio,-1],0.6180339887498948`],Axes -> {True,True},AxesLabel -> {FormBox[TagBox[
+"\"Time (s)\"",HoldForm],TraditionalForm],FormBox[TagBox["\"V (V)\"",HoldForm],TraditionalForm]},AxesOrigin -> {0,-0.07499641211184815`},RuleDelayed[
+DisplayFunction,Identity],Epilog -> CompressedData["1:eJxTTMoPSmNjYGAoZgESPpnFJWnMIB4HkAhyd3LOz8kvymQEcjIZYEQaiFvMDiRcEoszMvPS05iQ9RezAhnBuYk5OQgWQotPZl6qU34FqhZUHtiSIs2Y/kNfNdbsR5UrYgCDB/YIebDRnEAiID8zryQ4syq1aIdc6+vAHX32RHqFA6YZ5DB+3A4rcvL6tVsvZY49LsfxHJgRrrJ2HU75XN1ZKySmbMcp//xXuur8i/txyps8kbo4if0ITvkXpxr5w9RO4JTfuvGFr6TrGdzmn1F3e2d4Aad8r330U3/HS7jdv6mvZWPAFZzykWqHlIUTruGUvzXz66GS/Bs45aN4NZOu1d3CKX+zIYbRou8Obv1f+hfMnHsPIQ8A+Tzt3A=="],Frame -> {{False,False},{False,False}},FrameLabel -> {{None,None},{None,None}},FrameTicks -> {{Automatic,Automatic},{Automatic,Automatic}},GridLines -> {Automatic,Automatic},GridLinesStyle -> Directive[
+GrayLevel[0.5`,0.4`]],Method -> CompressedData["1:eJzlUstOwzAQbMv7wlscuPENfAAqLYVKFKqm6t1N1u0K1xt5bYnw2/wAtqs+CbkgTkRKtPbuzuxM9mZMA7lXq9V413+eka1sLE4DpyC59EEbpHDK3pPTmTBFYgsFfOQTTWdpJiymW03Xq6ZHI/IpptzVFoxILZKWOxV8Bz4YgWFfZ27j83m3VXLug6HHeuuRY+gTY0RtrKPGYGgccBDXEYqhhOhBSkgtVw4UdD7hZKr8a2W9ojIwGe8GYbjfSh6vw/QJ9S+wwkhtQ7lCDbypu8QqaQAkmVnLGSbTowyW5pTg5kqkMANtK3HD6O9JsK2pVEmuSMLxhfQ2xelqM3rA07hKcyPOAtiYSTkL0Z8EPwD3v6sPEEkqvPhJx+m4Ucw/0F35oEVkMtTCAg+J1GseOyrlnYQpkb0XxYJiPuRhWKbFzSZCyJcULW+6mTcVbbH67Ykii/UNgX1hbEkBLsH/jKFkzS6ieTlCNhLKwX9y4gucBRzd"],PlotLabel -> FormBox[
+"\"LIF Neuron \[LongDash] Membrane Potential\"",TraditionalForm],PlotRange -> {All,All},PlotRangeClipping -> True,PlotRangePadding -> {{Automatic,Automatic},{Automatic,Automatic}},Ticks -> {Automatic,Automatic}},
+ExpressionUUID -> "78352c69-f1bb-4d7d-8d10-199bec0ca3d5"],StandardForm],"Output",
+CellLabel -> "Out[38]= ",ExpressionUUID -> "5a6231e8-b542-4eac-a6f9-9f220144bb2a"]},
+Open],ExpressionUUID -> "08bc9658-1faa-441d-9f60-c46f4612fee6"],Cell[
+"\<\>","Text",
+ExpressionUUID -> "34027042-62b7-4270-9a89-7b197dcdb8b4"],Cell[
+TextData[{"1",StyleBox[
+RowBox[{"."," "}]],"The"," ","membrane"," ","potential"," ","between"," ","spikes"," ","forms"," ","a"," ","curved"," ","shape"," ","rather"," ","than"," ","a"," ","straight"," ","line",StyleBox[
+RowBox[{"."," "}]],"\n","This"," ","occurs"," ","because"," ","the"," ","LIF"," ","equation"," ","is"," ","a"," ","differential"," ","equation"," ","with"," ","a"," ","leak"," ","term"," ","\n","that"," ","causes"," ","the"," ","voltage"," ","to"," ","approach"," ","equilibrium"," ","exponentially"," ","rather"," ","than"," ","linearly",".","\n","\n","2",StyleBox[
+RowBox[{"."," "}]],"After"," ","the"," ","current"," ","turns"," ","off"," ","at"," ","t",StyleBox[
+RowBox[{" ",">"," "}]],"0",".","4"," ","seconds",StyleBox[RowBox[{","," "}]],"the"," ","membrane"," ","potential"," ","stops"," ","rising"," ","\n","and"," ","gradually"," ","decays"," ","back"," ","toward"," ","the"," ","resting"," ","potential",StyleBox[
+RowBox[{"."," "}]],"This"," ","occurs"," ","because"," ","the"," ","\n","input"," ","current"," ","becomes"," ","zero"," ","and"," ","the"," ","leak"," ","term"," ","in"," ","the"," ","LIF"," ","equation"," ","pulls"," ","the"," ","voltage"," ","\n","back"," ","toward"," ","the"," ","resting"," ","value"," ","Vrest",".","\n"}],
+"Text",ExpressionUUID -> "97bede52-c6a8-433a-b3cb-a4b0dfcd063f"],Cell[
+CellGroupData[
+{Cell[
+BoxData[RowBox[{"Manipulate","[","\n","  ",RowBox[{RowBox[{"Module","[",RowBox[
+{RowBox[{"{",RowBox[{"sol",","," ",RowBox[{"sc"," ","="," ","0"}],","," ",RowBox[
+{"st"," ","="," ",RowBox[{"{","}"}]}],","," ","iFunc"}],"}"}],",","\n","\n","    ",RowBox[
+{"(*"," ",RowBox[{RowBox[{"Local"," ","input"," ",RowBox[{"current",":"," ",RowBox[
+{"only"," ","active"," ","from"," ","t"}]}]}]," ","="," ",RowBox[{"0.05"," ","to"," ","0.4"," ","s"}]}]," ","*)"}],"\n","    ",RowBox[
+{RowBox[{RowBox[{"iFunc","[","t_","]"}]," ",":="," ",RowBox[{"If","[",RowBox[{RowBox[
+{"0.05"," ","\[LessEqual]"," ","t"," ","\[LessEqual]"," ","0.4"}],","," ",RowBox[
+{"currentVal"," ","*"," ",RowBox[{"10","^",RowBox[{"-","9"}]}]}],","," ","0.0"}],"]"}]}],";","\n","\n","    ",RowBox[
+{"(*"," ",RowBox[{"LIF"," ","parameters"," ",RowBox[{"(","fixed",")"}]}]," ","*)"}],"\n","    ",RowBox[
+{"With","[",RowBox[{RowBox[{"{","\n","      ",RowBox[{RowBox[{"Vrest","   ","="," ",RowBox[
+{"-","0.070"}]}],",","  ",RowBox[{"(*"," ",RowBox[{RowBox[{"-","70"}]," ","mV"}]," ","*)"}],"\n","      ",RowBox[
+{"Vreset","  ","="," ",RowBox[{"-","0.075"}]}],",","  ",RowBox[{"(*"," ",RowBox[{RowBox[
+{"-","75"}]," ","mV"}]," ","*)"}],"\n","      ",RowBox[{"R","       ","="," ",RowBox[
+{"10","^","7"}]}]}],"     ",RowBox[{"(*"," ",RowBox[{"10"," ","M\[CapitalOmega]"}],"  ","*)"}],"\n","    ","}"}],",","\n","\n","      ",RowBox[
+{RowBox[{"sol"," ","="," ",RowBox[{"NDSolve","[","\n","        ",RowBox[{RowBox[{"{","\n","          ",RowBox[
+{RowBox[{RowBox[{"tauVal"," ","*"," ",RowBox[{RowBox[{"V","'"}],"[","t","]"}]}]," ","=="," ",RowBox[
+{RowBox[{"-",RowBox[{"(",RowBox[{RowBox[{"V","[","t","]"}]," ","-"," ","Vrest"}],")"}]}]," ","+"," ",RowBox[
+{"R"," ","*"," ",RowBox[{"iFunc","[","t","]"}]}]}]}],",","\n","          ",RowBox[
+{RowBox[{"V","[","0","]"}]," ","=="," ","Vrest"}],",","\n","          ",RowBox[{"WhenEvent","[",RowBox[
+{RowBox[{RowBox[{"V","[","t","]"}]," ","\[GreaterEqual]"," ",RowBox[{"thresh"," ","*"," ",RowBox[
+{"10","^",RowBox[{"-","3"}]}]}]}],",","\n","            ",RowBox[{"{","\n","              ",RowBox[
+{RowBox[{"sc","++"}],",","\n","              ",RowBox[{"AppendTo","[",RowBox[{"st",","," ","t"}],"]"}],",","\n","              ",RowBox[
+{RowBox[{"V","[","t","]"}]," ","\[Rule]"," ","Vreset"}]}],"\n","            ","}"}]}],"\n","          ","]"}]}],"\n","        ","}"}],",","\n","        ","V",",","\n","        ",RowBox[
+{"{",RowBox[{"t",","," ","0",","," ","0.5"}],"}"}],",","\n","        ",RowBox[{"MaxSteps"," ","\[Rule]"," ","100000"}]}],"\n","      ","]"}]}],";","\n","\n","      ",RowBox[
+{"(*"," ",RowBox[{"Main"," ","voltage"," ","trace"," ","plot"}]," ","*)"}],"\n","      ",RowBox[
+{"Show","[","\n","        ",RowBox[{RowBox[{"Plot","[","\n","          ",RowBox[{RowBox[
+{"1000"," ","*"," ",RowBox[{"Evaluate","[",RowBox[{RowBox[{"V","[","t","]"}]," ","/."," ","sol"}],"]"}]}],",","  ",RowBox[
+{"(*"," ",RowBox[{RowBox[{"convert"," ","V"}]," ","->"," ",RowBox[{"mV"," ","for"," ","display"}]}]," ","*)"}],"\n","          ",RowBox[
+{"{",RowBox[{"t",","," ","0",","," ","0.5"}],"}"}],",","\n","          ",RowBox[{"PlotStyle","      ","\[Rule]"," ",RowBox[
+{"{",RowBox[{"Directive","[",RowBox[{"Blue",","," ","Thick"}],"]"}],"}"}]}],",","\n","          ",RowBox[
+{"PlotRange","      ","\[Rule]"," ",RowBox[{"{",RowBox[{RowBox[{"-","90"}],","," ",RowBox[
+{"-","30"}]}],"}"}]}],",","\n","          ",RowBox[{"AxesLabel","      ","\[Rule]"," ",RowBox[
+{"{",RowBox[{"\"Time (s)\"",","," ","\"V (mV)\""}],"}"}]}],",","\n","          ",RowBox[
+{"PlotLabel","      ","\[Rule]"," ",RowBox[{"Style","[","\n","                              ",RowBox[
+{RowBox[{"StringForm","[",RowBox[{"\"Spikes: ``   |   Firing rate: `` Hz\"",",","\n","                                ","sc",",","\n","                                ",RowBox[
+{"If","[",RowBox[{RowBox[{"sc"," ",">"," ","0"}],","," ",RowBox[{"NumberForm","[",RowBox[
+{RowBox[{"sc"," ","/"," ","0.35"}],","," ",RowBox[{"{",RowBox[{"4",","," ","1"}],"}"}]}],"]"}],","," ","0"}],"]"}]}],"\n","                              ","]"}],",","\n","                              ","Bold",","," ","14"}],"\n","                            ","]"}]}],",","\n","          ",RowBox[
+{"GridLines","      ","\[Rule]"," ","Automatic"}],",","\n","          ",RowBox[{"GridLinesStyle"," ","\[Rule]"," ",RowBox[
+{"Directive","[",RowBox[{"Gray",","," ","Dashed",","," ",RowBox[{"Opacity","[","0.4","]"}]}],"]"}]}],",","\n","          ",RowBox[
+{"ImageSize","      ","\[Rule]"," ","Large"}],",","\n","          ",RowBox[{"PlotTheme","      ","\[Rule]"," ","\"Scientific\""}]}],"\n","        ","]"}],",","\n","\n","        ",RowBox[
+{"(*"," ",RowBox[{"Threshold"," ","line"}]," ","*)"}],"\n","        ",RowBox[{"Graphics","[",RowBox[
+{"{","\n","          ",RowBox[{"Red",","," ","Dashed",","," ","Thick",",","\n","          ",RowBox[
+{"Line","[",RowBox[{"{",RowBox[{RowBox[{"{",RowBox[{"0",","," ","thresh"}],"}"}],","," ",RowBox[
+{"{",RowBox[{"0.5",","," ","thresh"}],"}"}]}],"}"}],"]"}],",","\n","          ",RowBox[
+{"Inset","[",RowBox[{RowBox[{"Style","[",RowBox[{"\"V_thresh\"",","," ","Red",","," ","10"}],"]"}],","," ",RowBox[
+{"{",RowBox[{"0.48",","," ",RowBox[{"thresh"," ","+"," ","1.5"}]}],"}"}]}],"]"}]}],"\n","        ","}"}],"]"}],",","\n","\n","        ",RowBox[
+{"(*"," ",RowBox[{"Spike"," ","markers"," ","at"," ","threshold"}]," ","*)"}],"\n","        ",RowBox[
+{"Graphics","[",RowBox[{"{","\n","          ",RowBox[{"Red",","," ",RowBox[{"PointSize","[","0.015","]"}],",","\n","          ",RowBox[
+{"Point","[",RowBox[{RowBox[{RowBox[{"{",RowBox[{"#",","," ","thresh"}],"}"}]," ","&"}]," ","/@"," ","st"}],"]"}]}],"\n","        ","}"}],"]"}],",","\n","\n","        ",RowBox[
+{"(*"," ",RowBox[{RowBox[{"Shaded"," ","current"}],"-",RowBox[{"on"," ","region"}]}]," ","*)"}],"\n","        ",RowBox[
+{"Graphics","[",RowBox[{"{","\n","          ",RowBox[{RowBox[{"Opacity","[","0.07","]"}],","," ","LightBlue",",","\n","          ",RowBox[
+{"Rectangle","[",RowBox[{RowBox[{"{",RowBox[{"0.05",","," ",RowBox[{"-","90"}]}],"}"}],","," ",RowBox[
+{"{",RowBox[{"0.4",","," ",RowBox[{"-","30"}]}],"}"}]}],"]"}]}],"\n","        ","}"}],"]"}]}],"\n","      ","]"}]}]}],"\n","    ","]"}]}]}],"\n","  ","]"}],",","\n","\n","  ",RowBox[
+{"(*"," ",RowBox[{"\[HorizontalLine]\[HorizontalLine]"," ","Sliders"," ","\[HorizontalLine]\[HorizontalLine]"}]," ","*)"}],"\n","  ",RowBox[
+{"Style","[",RowBox[{"\"Threshold (mV)\"",","," ","Bold"}],"]"}],",","\n","  ",RowBox[
+{"{",RowBox[{RowBox[{"{",RowBox[{"thresh",","," ",RowBox[{"-","55.0"}],","," ","\"Threshold (mV)\""}],"}"}],","," ",RowBox[
+{"-","65"}],","," ",RowBox[{"-","45"}],","," ","1",",","\n","    ",RowBox[{"Appearance"," ","\[Rule]"," ","\"Labeled\""}]}],"}"}],",","\n","\n","  ",RowBox[
+{"Style","[",RowBox[{"\"Membrane Time Constant\"",","," ","Bold"}],"]"}],",","\n","  ",RowBox[
+{"{",RowBox[{RowBox[{"{",RowBox[{"tauVal",","," ","0.020",","," ","\"Time Constant (s)\""}],"}"}],","," ","0.005",","," ","0.100",","," ","0.005",",","\n","    ",RowBox[
+{"Appearance"," ","\[Rule]"," ","\"Labeled\""}]}],"}"}],",","\n","\n","  ",RowBox[
+{"Style","[",RowBox[{"\"Input Current\"",","," ","Bold"}],"]"}],",","\n","  ",RowBox[
+{"{",RowBox[{RowBox[{"{",RowBox[{"currentVal",","," ","18.0",","," ","\"Input Current (nA)\""}],"}"}],","," ","0",","," ","40",","," ","1",",","\n","    ",RowBox[
+{"Appearance"," ","\[Rule]"," ","\"Labeled\""}]}],"}"}],",","\n","\n","  ",RowBox[
+{"(*"," ","Layout"," ","*)"}],"\n","  ",RowBox[{"ControlPlacement"," ","\[Rule]"," ","Left"}],",","\n","  ",RowBox[
+{"SynchronousUpdating"," ","\[Rule]"," ","False"}]}],"  ",RowBox[{"(*"," ",RowBox[
+{"prevents"," ","UI"," ","freeze"," ","during"," ","NDSolve"}]," ","*)"}],"\n","]"}]],
+"Input",CellLabel -> "In[41]:= ",ExpressionUUID -> "10a2f6ff-3cdb-40e7-9622-fddc6bb08ada"],Cell[
+BoxData[
+TagBox[StyleBox[DynamicModuleBox[{Set[currentVal$$,18.`],Set[tauVal$$,0.02`],Set[
+thresh$$,-55.`],Set[Typeset`show$$,True],Set[Typeset`bookmarkList$$,{}],Set[Typeset`bookmarkMode$$,
+"Menu"],Typeset`animator$$,Set[Typeset`animvar$$,1],Set[Typeset`name$$,"\"untitled\""],Set[
+Typeset`specs$$,{{Hold[Style["Threshold (mV)",Bold]],Manipulate`Dump`ThisIsNotAControl,ControlType -> None},{{Hold[
+thresh$$],-55.`,"Threshold (mV)"},-65,-45,1,ControlType -> Manipulator},{Hold[Style[
+"Membrane Time Constant",Bold]],Manipulate`Dump`ThisIsNotAControl,ControlType -> None},{{Hold[
+tauVal$$],0.02`,"Time Constant (s)"},0.005`,0.1`,0.005`,ControlType -> Manipulator},{Hold[
+Style["Input Current",Bold]],Manipulate`Dump`ThisIsNotAControl,ControlType -> None},{{Hold[
+currentVal$$],18.`,"Input Current (nA)"},0,40,1,ControlType -> Manipulator}}],Set[
+Typeset`size$$,Automatic],Set[Typeset`update$$,0],Set[Typeset`initDone$$,False],Set[
+Typeset`skipInitDone$$,True],Set[Typeset`keyframeActionsQ$$,False],Set[Typeset`keyframeList$$,
+{}]},DynamicBox[Manipulate`ManipulateBoxes[1,StandardForm,RuleDelayed["Variables",
+{Set[currentVal$$,18.`],Set[tauVal$$,0.02`],Set[thresh$$,-55.`]}],RuleDelayed["ControllerVariables",
+{}],RuleDelayed["OtherVariables",{Typeset`show$$,Typeset`bookmarkList$$,Typeset`bookmarkMode$$,Typeset`animator$$,Typeset`animvar$$,Typeset`name$$,Typeset`specs$$,Typeset`size$$,Typeset`update$$,Typeset`initDone$$,Typeset`skipInitDone$$,Typeset`keyframeActionsQ$$,Typeset`keyframeList$$}],
+RuleDelayed["Body",Module[{sol$,Set[sc$,0],Set[st$,{}],iFunc$},CompoundExpression[
+SetDelayed[iFunc$[Pattern[t$,Blank[]]],If[LessEqual[0.05`,t$,0.4`],Times[currentVal$$,
+Power[10,-9]],0.`]],With[{Set[Vrest$,-0.07`],Set[Vreset$,-0.075`],Set[R$,Power[10,
+7]]},CompoundExpression[Set[sol$,NDSolve[{Equal[Times[tauVal$$,Derivative[1][V][t]],
+Plus[Times[-1,Plus[V[t],Times[-1,Vrest$]]],Times[R$,iFunc$[t]]]],Equal[V[0],Vrest$],WhenEvent[
+GreaterEqual[V[t],Times[thresh$$,Power[10,-3]]],{Increment[sc$],AppendTo[st$,t],V[
+t] -> Vreset$}]},V,{t,0,0.5`},MaxSteps -> 100000]],Show[Plot[Times[1000,Evaluate[
+ReplaceAll[V[t],sol$]]],{t,0,0.5`},PlotStyle -> {Directive[Blue,Thick]},PlotRange -> {-90,-30},
+AxesLabel -> {"Time (s)","V (mV)"},PlotLabel -> Style[StringForm["Spikes: ``   |   Firing rate: `` Hz",
+sc$,If[Greater[sc$,0],NumberForm[Times[sc$,Power[0.35`,-1]],{4,1}],0]],Bold,14],GridLines -> Automatic,
+GridLinesStyle -> Directive[Gray,Dashed,Opacity[0.4`]],ImageSize -> Large,PlotTheme -> "Scientific"],
+Graphics[{Red,Dashed,Thick,Line[{{0,thresh$$},{0.5`,thresh$$}}],Inset[Style["V_thresh",
+Red,10],{0.48`,Plus[thresh$$,1.5`]}]}],Graphics[{Red,PointSize[0.015`],Point[Map[
+Function[{Slot[1],thresh$$}],st$]]}],Graphics[{Opacity[0.07`],LightBlue,Rectangle[
+{0.05`,-90},{0.4`,-30}]}]]]]]]],RuleDelayed["Specifications",{Style["Threshold (mV)",
+Bold],{{thresh$$,-55.`,"Threshold (mV)"},-65,-45,1,Appearance -> "Labeled"},Style[
+"Membrane Time Constant",Bold],{{tauVal$$,0.02`,"Time Constant (s)"},0.005`,0.1`,0.005`,Appearance -> "Labeled"},Style[
+"Input Current",Bold],{{currentVal$$,18.`,"Input Current (nA)"},0,40,1,Appearance -> "Labeled"}}],
+RuleDelayed["Options",{ControlPlacement -> Left,SynchronousUpdating -> False}],RuleDelayed[
+"DefaultOptions",{}]],SingleEvaluation -> True],RuleDelayed[DynamicModuleValues,{}],
+RuleDelayed[Deinitialization,None],RuleDelayed[UntrackedVariables,{Typeset`size$$}],
+SynchronousInitialization -> True,RuleDelayed[UnsavedVariables,{Typeset`initDone$$}],
+RuleDelayed[UndoTrackedVariables,{Typeset`show$$,Typeset`bookmarkMode$$}],ExpressionUUID -> "c7f34cf9-fc79-4aeb-9c93-ee1ae3377eb0"],
+"Manipulate",Deployed -> True,StripOnInput -> False],Manipulate`InterpretManipulate[
+1]],StandardForm],"Output",CellLabel -> "Out[41]= ",ExpressionUUID -> "ea5d168c-cbfc-4cab-94fa-ea8804c660bb"]},
+Open],ExpressionUUID -> "9a161d14-6608-44cd-aee7-897958edba0a"],Cell[
+TextData[{"1",StyleBox[
+RowBox[{"."," "}]],"The"," ","minimum"," ","current"," ","needed"," ","to"," ","produce"," ","a"," ","spike"," ","was"," ","approximately"," ","12"," ","nA",StyleBox[
+RowBox[{"."," "}]],"\n","Below"," ","this"," ","level"," ","the"," ","neuron"," ","never"," ","reached"," ","the"," ","threshold"," ","voltage",".","\n","\n","2",StyleBox[
+RowBox[{"."," "}]],"When"," ","the"," ","input"," ","current"," ","was"," ","set"," ","to"," ","25"," ","nA"," ","and"," ","the"," ","threshold"," ","was"," ","gradually"," ","increased",",","\n","the"," ","neuron"," ","stopped"," ","firing"," ","at"," ","around",StyleBox[
+RowBox[{" ","-"}]],"48"," ","mV",StyleBox[RowBox[{"."," "}]],"This"," ","happens"," ","because"," ","the"," ","membrane"," ","potential","\n","can"," ","no"," ","longer"," ","reach"," ","the"," ","higher"," ","threshold"," ","level",".","\n","\n","3",StyleBox[
+RowBox[{"."," "}]],"When"," ","comparing"," ","tau",StyleBox[RowBox[{" ","="," "}]],"0",".","010"," ","and"," ","tau",StyleBox[
+RowBox[{" ","="," "}]],"0",".","050",StyleBox[RowBox[{","," "}]],"the"," ","smaller"," ","tau"," ","produced"," ","more"," ","spikes","\n","because"," ","the"," ","neuron"," ","responded"," ","faster"," ","to"," ","the"," ","input"," ","current",StyleBox[
+RowBox[{"."," "}]],"The"," ","larger"," ","tau"," ","created","\n","a"," ","smoother"," ","membrane"," ","potential"," ","curve"," ","because"," ","the"," ","voltage"," ","changed"," ","more"," ","slowly",".","\n"}],
+"Text",ExpressionUUID -> "04d4b8f8-15c3-4b1a-977f-331d3b168381"],Cell[
+CellGroupData[
+{Cell[
+BoxData[RowBox[{"Manipulate","[","\n","  ",RowBox[{RowBox[{"Module","[",RowBox[
+{RowBox[{"{",RowBox[{"sol",","," ",RowBox[{"sc"," ","="," ","0"}],","," ",RowBox[
+{"st"," ","="," ",RowBox[{"{","}"}]}],","," ","iFunc"}],"}"}],",","\n","\n","    ",RowBox[
+{"(*"," ",RowBox[{"Local"," ","input"," ",RowBox[{"current",":"," ",RowBox[{"on"," ","only"," ",RowBox[
+{"during"," ","[",RowBox[{"0.05",","," ","0.4"}],"]"}]," ","seconds"}]}]}]," ","*)"}],"\n","    ",RowBox[
+{RowBox[{RowBox[{"iFunc","[","t_","]"}]," ",":="," ",RowBox[{"If","[",RowBox[{RowBox[
+{"0.05"," ","\[LessEqual]"," ","t"," ","\[LessEqual]"," ","0.4"}],","," ",RowBox[
+{"currentVal"," ","*"," ",RowBox[{"10","^",RowBox[{"-","9"}]}]}],","," ","0.0"}],"]"}]}],";","\n","\n","    ",RowBox[
+{"(*"," ","NDSolve"," ","*)"}],"\n","    ",RowBox[{"sol"," ","="," ",RowBox[{"NDSolve","[","\n","      ",RowBox[
+{RowBox[{"{","\n","        ",RowBox[{RowBox[{RowBox[{"tauVal"," ","*"," ",RowBox[
+{RowBox[{"V","'"}],"[","t","]"}]}]," ","=="," ",RowBox[{RowBox[{"-",RowBox[{"(",RowBox[
+{RowBox[{"V","[","t","]"}]," ","-"," ",RowBox[{"(",RowBox[{"-","0.070"}],")"}]}],")"}]}]," ","+"," ",RowBox[
+{RowBox[{"10","^","7"}]," ","*"," ",RowBox[{"iFunc","[","t","]"}]}]}]}],",","\n","        ",RowBox[
+{RowBox[{"V","[","0","]"}]," ","=="," ",RowBox[{"-","0.070"}]}],",","\n","        ",RowBox[
+{"WhenEvent","[",RowBox[{RowBox[{RowBox[{"V","[","t","]"}]," ","\[GreaterEqual]"," ",RowBox[
+{"thresh"," ","*"," ",RowBox[{"10","^",RowBox[{"-","3"}]}]}]}],",","\n","          ",RowBox[
+{"{","\n","            ",RowBox[{RowBox[{"sc","++"}],",","\n","            ",RowBox[
+{"AppendTo","[",RowBox[{"st",","," ","t"}],"]"}],",","\n","            ",RowBox[{RowBox[
+{"V","[","t","]"}]," ","\[Rule]"," ",RowBox[{"-","0.075"}]}]}],"\n","          ","}"}]}],"\n","        ","]"}]}],"\n","      ","}"}],",","\n","      ","V",",","\n","      ",RowBox[
+{"{",RowBox[{"t",","," ","0",","," ","0.5"}],"}"}],",","\n","      ",RowBox[{"MaxSteps"," ","\[Rule]"," ","100000"}]}],"\n","    ","]"}]}],";","\n","\n","    ",RowBox[
+{"(*"," ","Plot"," ","*)"}],"\n","    ",RowBox[{"Plot","[","\n","      ",RowBox[{RowBox[
+{"Evaluate","[",RowBox[{RowBox[{RowBox[{"V","[","t","]"}]," ","*"," ","1000"}]," ","/."," ","sol"}],"]"}],",","   ",RowBox[
+{"(*"," ",RowBox[{RowBox[{"convert"," ","V"}]," ","->"," ",RowBox[{"mV"," ","for"," ","display"}]}]," ","*)"}],"\n","      ",RowBox[
+{"{",RowBox[{"t",","," ","0",","," ","0.5"}],"}"}],",","\n","      ",RowBox[{"PlotLabel"," ","\[Rule]"," ",RowBox[
+{"Style","[","\n","        ",RowBox[{RowBox[{"StringForm","[",RowBox[{"\"Spikes: ``  |  Firing rate: `` Hz\"",",","\n","          ","sc",",","\n","          ",RowBox[
+{"NumberForm","[",RowBox[{RowBox[{"sc"," ","/"," ","0.5"}],","," ",RowBox[{"{",RowBox[
+{"4",","," ","1"}],"}"}]}],"]"}]}],"\n","        ","]"}],","," ","Bold",","," ","14"}],"\n","      ","]"}]}],",","\n","      ",RowBox[
+{"AxesLabel"," ","\[Rule]"," ",RowBox[{"{",RowBox[{"\"Time (s)\"",","," ","\"Membrane Potential (mV)\""}],"}"}]}],",","\n","      ",RowBox[
+{"PlotStyle"," ","\[Rule]"," ",RowBox[{"{",RowBox[{"Directive","[",RowBox[{"Blue",","," ","Thick"}],"]"}],"}"}]}],",","\n","      ",RowBox[
+{"PlotRange"," ","\[Rule]"," ",RowBox[{"{",RowBox[{RowBox[{"-","85"}],","," ",RowBox[
+{"-","40"}]}],"}"}]}],",","\n","      ",RowBox[{"GridLines"," ","\[Rule]"," ","Automatic"}],",","\n","      ",RowBox[
+{"GridLinesStyle"," ","\[Rule]"," ","LightGray"}],",","\n","      ",RowBox[{"Epilog"," ","\[Rule]"," ",RowBox[
+{"{","\n","        ",RowBox[{"(*"," ",RowBox[{"Threshold"," ","line"}]," ","*)"}],"\n","        ",RowBox[
+{RowBox[{"Directive","[",RowBox[{"Red",","," ","Dashed",","," ","Thick"}],"]"}],",","\n","        ",RowBox[
+{"Line","[",RowBox[{"{",RowBox[{RowBox[{"{",RowBox[{"0",","," ","thresh"}],"}"}],","," ",RowBox[
+{"{",RowBox[{"0.5",","," ","thresh"}],"}"}]}],"}"}],"]"}],",","\n","        ",RowBox[
+{"Text","[","\n","          ",RowBox[{RowBox[{"Style","[",RowBox[{RowBox[{"StringForm","[",RowBox[
+{"\"V_thresh = `` mV\"",","," ","thresh"}],"]"}],","," ","Red",","," ","10"}],"]"}],",","\n","          ",RowBox[
+{"{",RowBox[{"0.45",","," ",RowBox[{"thresh"," ","+"," ","2"}]}],"}"}]}],"\n","        ","]"}],",","\n","        ",RowBox[
+{"(*"," ",RowBox[{"Current","-",RowBox[{"on"," ","shading"}]}]," ","*)"}],"\n","        ",RowBox[
+{"Directive","[",RowBox[{"Yellow",","," ",RowBox[{"Opacity","[","0.08","]"}]}],"]"}],",","\n","        ",RowBox[
+{"Rectangle","[",RowBox[{RowBox[{"{",RowBox[{"0.05",","," ",RowBox[{"-","85"}]}],"}"}],","," ",RowBox[
+{"{",RowBox[{"0.4",","," ",RowBox[{"-","40"}]}],"}"}]}],"]"}],",","\n","        ",RowBox[
+{"(*"," ",RowBox[{"Spike"," ","dot"," ","markers"}]," ","*)"}],"\n","        ",RowBox[
+{"Directive","[",RowBox[{RowBox[{"PointSize","[","0.018","]"}],","," ","Red"}],"]"}],",","\n","        ",RowBox[
+{"Point","[",RowBox[{RowBox[{RowBox[{"{",RowBox[{"#",","," ","thresh"}],"}"}]," ","&"}]," ","/@"," ","st"}],"]"}]}],"\n","      ","}"}]}],",","\n","      ",RowBox[
+{"ImageSize"," ","\[Rule]"," ","650"}],",","\n","      ",RowBox[{"Frame"," ","\[Rule]"," ","True"}],",","\n","      ",RowBox[
+{"FrameLabel"," ","\[Rule]"," ",RowBox[{"{",RowBox[{RowBox[{"{",RowBox[{"\"Membrane Potential (mV)\"",","," ","None"}],"}"}],","," ",RowBox[
+{"{",RowBox[{"\"Time (s)\"",","," ","None"}],"}"}]}],"}"}]}]}],"\n","    ","]"}]}]}],"\n","\n","  ","]"}],",","\n","\n","  ",RowBox[
+{"(*"," ",RowBox[{"\[HorizontalLine]\[HorizontalLine]"," ","Sliders"," ","\[HorizontalLine]\[HorizontalLine]"}]," ","*)"}],"\n","  ",RowBox[
+{"Style","[",RowBox[{"\"LIF Neuron Explorer\"",","," ","Bold",","," ","16"}],"]"}],",","\n","  ","Delimiter",",","\n","  ",RowBox[
+{"{",RowBox[{RowBox[{"{",RowBox[{"thresh",",","   ",RowBox[{"-","55.0"}],","," ","\"Threshold (mV)\""}],"}"}],",","   ",RowBox[
+{"-","65"}],","," ",RowBox[{"-","45"}],",","  ","1",",","  ",RowBox[{"Appearance"," ","\[Rule]"," ","\"Labeled\""}]}],"}"}],",","\n","  ",RowBox[
+{"{",RowBox[{RowBox[{"{",RowBox[{"tauVal",",","   ","0.020",","," ","\"Time Constant (s)\""}],"}"}],","," ","0.005",","," ","0.100",","," ","0.005",","," ",RowBox[
+{"Appearance"," ","\[Rule]"," ","\"Labeled\""}]}],"}"}],",","\n","  ",RowBox[{"{",RowBox[
+{RowBox[{"{",RowBox[{"currentVal",","," ","18.0",","," ","\"Input Current (nA)\""}],"}"}],","," ","0",","," ","40",","," ","1",","," ",RowBox[
+{"Appearance"," ","\[Rule]"," ","\"Labeled\""}]}],"}"}],",","\n","  ","Delimiter",",","\n","  ",RowBox[
+{"TrackedSymbols"," ","\[RuleDelayed]"," ",RowBox[{"{",RowBox[{"thresh",","," ","tauVal",","," ","currentVal"}],"}"}]}],",","\n","  ",RowBox[
+{"SynchronousUpdating"," ","\[Rule]"," ","False"}]}],"\n","]"}]],"Input",CellLabel -> "In[51]:= ",
+ExpressionUUID -> "12589725-76b8-4280-8968-89732509630a"],Cell[
+BoxData[TagBox[StyleBox[
+DynamicModuleBox[{Set[currentVal$$,18.`],Set[tauVal$$,0.02`],Set[thresh$$,-55.`],Set[
+Typeset`show$$,True],Set[Typeset`bookmarkList$$,{}],Set[Typeset`bookmarkMode$$,"Menu"],Typeset`animator$$,Set[
+Typeset`animvar$$,1],Set[Typeset`name$$,"\"untitled\""],Set[Typeset`specs$$,{{Hold[
+Style["LIF Neuron Explorer",Bold,16]],Manipulate`Dump`ThisIsNotAControl,ControlType -> None},{{Hold[
+thresh$$],-55.`,"Threshold (mV)"},-65,-45,1,ControlType -> Manipulator},{{Hold[tauVal$$],0.02`,"Time Constant (s)"},0.005`,0.1`,0.005`,ControlType -> Manipulator},{{Hold[
+currentVal$$],18.`,"Input Current (nA)"},0,40,1,ControlType -> Manipulator}}],Set[
+Typeset`size$$,Automatic],Set[Typeset`update$$,0],Set[Typeset`initDone$$,False],Set[
+Typeset`skipInitDone$$,True],Set[Typeset`keyframeActionsQ$$,False],Set[Typeset`keyframeList$$,
+{}]},DynamicBox[Manipulate`ManipulateBoxes[1,StandardForm,RuleDelayed["Variables",
+{Set[currentVal$$,18.`],Set[tauVal$$,0.02`],Set[thresh$$,-55.`]}],RuleDelayed["ControllerVariables",
+{}],RuleDelayed["OtherVariables",{Typeset`show$$,Typeset`bookmarkList$$,Typeset`bookmarkMode$$,Typeset`animator$$,Typeset`animvar$$,Typeset`name$$,Typeset`specs$$,Typeset`size$$,Typeset`update$$,Typeset`initDone$$,Typeset`skipInitDone$$,Typeset`keyframeActionsQ$$,Typeset`keyframeList$$}],
+RuleDelayed["Body",Module[{sol$,Set[sc$,0],Set[st$,{}],iFunc$},CompoundExpression[
+SetDelayed[iFunc$[Pattern[t$,Blank[]]],If[LessEqual[0.05`,t$,0.4`],Times[currentVal$$,
+Power[10,-9]],0.`]],Set[sol$,NDSolve[{Equal[Times[tauVal$$,Derivative[1][V][t]],Plus[
+Times[-1,Plus[V[t],Times[-1,-0.07`]]],Times[Power[10,7],iFunc$[t]]]],Equal[V[0],-0.07`],WhenEvent[
+GreaterEqual[V[t],Times[thresh$$,Power[10,-3]]],{Increment[sc$],AppendTo[st$,t],V[
+t] -> -0.075`}]},V,{t,0,0.5`},MaxSteps -> 100000]],Plot[Evaluate[ReplaceAll[Times[
+V[t],1000],sol$]],{t,0,0.5`},PlotLabel -> Style[StringForm["Spikes: ``  |  Firing rate: `` Hz",
+sc$,NumberForm[Times[sc$,Power[0.5`,-1]],{4,1}]],Bold,14],AxesLabel -> {"Time (s)","Membrane Potential (mV)"},
+PlotStyle -> {Directive[Blue,Thick]},PlotRange -> {-85,-40},GridLines -> Automatic,
+GridLinesStyle -> LightGray,Epilog -> {Directive[Red,Dashed,Thick],Line[{{0,thresh$$},{0.5`,thresh$$}}],Text[
+Style[StringForm["V_thresh = `` mV",thresh$$],Red,10],{0.45`,Plus[thresh$$,2]}],Directive[
+Yellow,Opacity[0.08`]],Rectangle[{0.05`,-85},{0.4`,-40}],Directive[PointSize[0.018`],
+Red],Point[Map[Function[{Slot[1],thresh$$}],st$]]},ImageSize -> 650,Frame -> True,
+FrameLabel -> {{"Membrane Potential (mV)",None},{"Time (s)",None}}]]]],RuleDelayed[
+"Specifications",{Style["LIF Neuron Explorer",Bold,16],Delimiter,{{thresh$$,-55.`,"Threshold (mV)"},-65,-45,1,Appearance -> "Labeled"},{{tauVal$$,0.02`,"Time Constant (s)"},0.005`,0.1`,0.005`,Appearance -> "Labeled"},{{currentVal$$,18.`,"Input Current (nA)"},0,40,1,Appearance -> "Labeled"},Delimiter}],
+RuleDelayed["Options",{RuleDelayed[TrackedSymbols,{thresh$$,tauVal$$,currentVal$$}],SynchronousUpdating -> False}],
+RuleDelayed["DefaultOptions",{}]],SingleEvaluation -> True],RuleDelayed[DynamicModuleValues,
+{}],RuleDelayed[Deinitialization,None],RuleDelayed[UntrackedVariables,{Typeset`size$$}],
+SynchronousInitialization -> True,RuleDelayed[UnsavedVariables,{Typeset`initDone$$}],
+RuleDelayed[UndoTrackedVariables,{Typeset`show$$,Typeset`bookmarkMode$$}],ExpressionUUID -> "e9c01af8-99a5-4e7e-ab7b-6e1009777ef2"],
+"Manipulate",Deployed -> True,StripOnInput -> False],Manipulate`InterpretManipulate[
+1]],StandardForm],"Output",CellLabel -> "Out[51]= ",ExpressionUUID -> "c81ce55b-2b77-4785-83b8-76e231a9dfd4"]},
+Open],ExpressionUUID -> "6799a853-ad0d-4c85-a0ca-e49e52413231"],Cell[
+TextData[{"1",StyleBox[
+RowBox[{"."," "}]],"The"," ","neuron"," ","began"," ","firing"," ","at"," ","approximately"," ","12"," ","nA",StyleBox[
+RowBox[{"."," "}]],"This"," ","value"," ","is"," ","similar"," ","to","\n","the"," ","rheobase"," ","observed"," ","in"," ","the"," ","interactive"," ","dashboard",".","\n","\n","2",StyleBox[
+RowBox[{"."," "}]],"The"," ","f","-","I"," ","curve"," ","is"," ","not"," ","perfectly"," ","linear",StyleBox[
+RowBox[{"."," "}]],"It"," ","starts"," ","at"," ","zero",StyleBox[RowBox[{","," "}]],"increases"," ","quickly",",","\n","and"," ","then"," ","gradually"," ","bends",StyleBox[
+RowBox[{"."," "}]],"A"," ","perfectly"," ","straight"," ","line"," ","would"," ","mean"," ","the"," ","neuron","\n","encodes"," ","stimulus"," ","intensity"," ","in"," ","a"," ","perfectly"," ","proportional"," ","way",".","\n","\n","3",StyleBox[
+RowBox[{"."," "}]],"The"," ","LIF"," ","model"," ","does"," ","not"," ","show"," ","strong"," ","saturation"," ","at"," ","high"," ","currents",".","\n","Real"," ","neurons"," ","saturate"," ","because"," ","of"," ","biological"," ","limits"," ","such"," ","as"," ","ion"," ","channel","\n","dynamics"," ","and"," ","refractory"," ","periods",StyleBox[
+RowBox[{","," "}]],"which"," ","are"," ","simplified"," ","in"," ","this"," ","model",".","\n"}],
+"Text",ExpressionUUID -> "e0344186-2eab-4886-a5e3-2bc25cb04b7c"],Cell[
+"\<\>","Text",
+ExpressionUUID -> "56850e20-0d46-4b2e-9703-ebef779db92e"],Cell[
+BoxData[{StyleBox[
+RowBox[{RowBox[{"(*"," ",RowBox[{RowBox[{"STEP"," ","1"}],":"," ",RowBox[{"Clear"," ","everything"," ","first"}]}]," ","*)"}],"\n",RowBox[
+{"Clear","[",RowBox[{"tau",","," ","Vrest",","," ","Vthresh",","," ","Vreset",","," ","R",","," ","V",","," ","t",","," ","sc",","," ","Isine",","," ","solSine"}],"]"}]}]],RowBox[
+{"\n","\n"}],StyleBox[RowBox[{RowBox[{"(*"," ",RowBox[{RowBox[{"STEP"," ","2"}],":"," ",RowBox[
+{"Redefine"," ","all"," ","parameters"}]}]," ","*)"}],"\n",RowBox[{RowBox[{"tau","     ","="," ","0.020"}],";"}]}]],"\n",RowBox[
+{RowBox[{"Vrest","   ","="," ",RowBox[{"-","70.0"}]}],";"}],"\n",RowBox[{RowBox[{"Vthresh"," ","="," ",RowBox[
+{"-","55.0"}]}],";"}],"\n",RowBox[{RowBox[{"Vreset","  ","="," ",RowBox[{"-","75.0"}]}],";"}],"\n",RowBox[
+{RowBox[{"R","       ","="," ","1.0"}],";"}],RowBox[{"\n","\n"}],StyleBox[RowBox[
+{RowBox[{"(*"," ",RowBox[{RowBox[{"STEP"," ","3"}],":"," ",RowBox[{"Define"," ","sine"," ","wave"," ","input"}]}]," ","*)"}],"\n",RowBox[
+{RowBox[{RowBox[{"Isine","[","t_","]"}]," ",":="," ",RowBox[{"15.0"," ","+"," ",RowBox[
+{"12.0"," ","*"," ",RowBox[{"Sin","[",RowBox[{"2"," ","*"," ","Pi"," ","*"," ","5"," ","*"," ","t"}],"]"}]}]}]}],";"}]}]],RowBox[
+{"\n","\n"}],StyleBox[RowBox[{RowBox[{"(*"," ",RowBox[{RowBox[{"STEP"," ","4"}],":"," ","Solve"}]," ","*)"}],"\n",RowBox[
+{RowBox[{"sc"," ","="," ","0"}],";"}]}]],"\n",RowBox[{RowBox[{"solSine"," ","="," ",RowBox[
+{"NDSolve","[","\n","  ",RowBox[{RowBox[{"{","\n","    ",RowBox[{RowBox[{RowBox[{"tau"," ","*"," ",RowBox[
+{RowBox[{"V","'"}],"[","t","]"}]}]," ","=="," ",RowBox[{RowBox[{"-",RowBox[{"(",RowBox[
+{RowBox[{"V","[","t","]"}]," ","-"," ","Vrest"}],")"}]}]," ","+"," ",RowBox[{"R"," ","*"," ",RowBox[
+{"Isine","[","t","]"}]}]}]}],",","\n","    ",RowBox[{RowBox[{"V","[","0","]"}]," ","=="," ","Vrest"}],",","\n","    ",RowBox[
+{"WhenEvent","[",RowBox[{RowBox[{RowBox[{"V","[","t","]"}]," ","\[GreaterEqual]"," ","Vthresh"}],",","\n","      ",RowBox[
+{"{",RowBox[{RowBox[{RowBox[{"V","[","t","]"}]," ","\[Rule]"," ","Vreset"}],",","\n","       ",RowBox[
+{"sc"," ","="," ",RowBox[{"sc"," ","+"," ","1"}]}]}],"}"}]}],"\n","    ","]"}]}],"\n","  ","}"}],",","\n","  ","V",",","\n","  ",RowBox[
+{"{",RowBox[{"t",","," ","0",","," ","1"}],"}"}],",","\n","  ",RowBox[{"DiscreteVariables"," ","\[Rule]"," ",RowBox[
+{"{","sc","}"}]}]}],"\n","]"}]}],";"}],RowBox[{"\n","\n"}],RowBox[{"Print","[",RowBox[
+{"\"Spikes fired: \"",","," ","sc"}],"]"}],RowBox[{"\n","\n"}],StyleBox[RowBox[{RowBox[
+{"(*"," ",RowBox[{RowBox[{"STEP"," ","5"}],":"," ","Plot"}]," ","*)"}],"\n",RowBox[
+{RowBox[{"plot1"," ","="," ",RowBox[{"Plot","[","\n","  ",RowBox[{RowBox[{"Evaluate","[",RowBox[
+{RowBox[{"V","[","t","]"}]," ","/."," ","solSine"}],"]"}],",","\n","  ",RowBox[{"{",RowBox[
+{"t",","," ","0",","," ","1"}],"}"}],",","\n","  ",RowBox[{"PlotRange"," ","\[Rule]"," ",RowBox[
+{"{",RowBox[{RowBox[{"-","80"}],","," ",RowBox[{"-","45"}]}],"}"}]}],",","\n","  ",RowBox[
+{"AxesLabel"," ","\[Rule]"," ",RowBox[{"{",RowBox[{"\"Time (s)\"",","," ","\"V (mV)\""}],"}"}]}],",","\n","  ",RowBox[
+{"PlotLabel"," ","\[Rule]"," ",RowBox[{"StringForm","[",RowBox[{"\"Membrane Potential \[LongDash] `` spikes\"",","," ","sc"}],"]"}]}],",","\n","  ",RowBox[
+{"Epilog"," ","\[Rule]"," ",RowBox[{"{",RowBox[{"Red",","," ","Dashed",","," ",RowBox[
+{"InfiniteLine","[",RowBox[{"{",RowBox[{RowBox[{"{",RowBox[{"0",","," ","Vthresh"}],"}"}],","," ",RowBox[
+{"{",RowBox[{"1",","," ","Vthresh"}],"}"}]}],"}"}],"]"}]}],"}"}]}],",","\n","  ",RowBox[
+{"Frame"," ","\[Rule]"," ","True"}]}],"\n","]"}]}],";"}]}]],RowBox[{"\n","\n"}],RowBox[
+{RowBox[{"plot2"," ","="," ",RowBox[{"Plot","[","\n","  ",RowBox[{RowBox[{"Isine","[","t","]"}],",","\n","  ",RowBox[
+{"{",RowBox[{"t",","," ","0",","," ","1"}],"}"}],",","\n","  ",RowBox[{"AxesLabel"," ","\[Rule]"," ",RowBox[
+{"{",RowBox[{"\"Time (s)\"",","," ","\"Current (nA)\""}],"}"}]}],",","\n","  ",RowBox[
+{"PlotLabel"," ","\[Rule]"," ","\"5 Hz Sine Wave Input\""}],",","\n","  ",RowBox[
+{"PlotStyle"," ","\[Rule]"," ",RowBox[{"Darker","[","Green","]"}]}],",","\n","  ",RowBox[
+{"Frame"," ","\[Rule]"," ","True"}]}],"\n","]"}]}],";"}],RowBox[{"\n","\n"}],RowBox[
+{"GraphicsColumn","[",RowBox[{RowBox[{"{",RowBox[{"plot1",","," ","plot2"}],"}"}],","," ",RowBox[
+{"ImageSize"," ","\[Rule]"," ","600"}]}],"]"}]}],"Input",CellLabel -> "In[19]:= ",
+ExpressionUUID -> "77149499-f640-4f2c-978a-b4e7f3cfb711"],Cell[
+BoxData[TemplateBox[
+{"NDSolve","ivar","\"\\!\\(\\*TagBox[\\\"0\\\", Short[#1, 5] & ]\\) is not a valid variable.\"",2,27,34,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "a9b0c6ba-e07b-4d6a-9640-1cdc684ab66b"],Cell[
+BoxData[
+InterpretationBox[RowBox[{"\"Spikes fired: \"","\[InvisibleSpace]","0"}],SequenceForm[
+"Spikes fired: ",0],Editable -> False],StandardForm],"Print",ExpressionUUID -> "93fb5ff1-194e-4898-86e3-880f3f5fba63"],Cell[
+BoxData[
+TemplateBox[{"ReplaceAll","reps","\"\\!\\(\\*TagBox[RowBox[{\\\"{\\\", RowBox[{\\\"NDSolve\\\", \\\"[\\\", RowBox[{RowBox[{\\\"{\\\", RowBox[{RowBox[{RowBox[{\\\"0.02`\\\", \\\" \\\", RowBox[{SuperscriptBox[\\\"V\\\", \\\"\[Prime]\\\", MultilineFunction -> None], \\\"[\\\", \\\"t\\\", \\\"]\\\"}]}], \\\"\[Equal]\\\", RowBox[{RowBox[{\\\"-\\\", \\\"70.`\\\"}], \\\"+\\\", RowBox[{\\\"1.`\\\", \\\" \\\", RowBox[{\\\"(\\\", RowBox[{RowBox[{\\\"15.`\\\", \\\"\[VeryThinSpace]\\\"}], \\\"+\\\", RowBox[{\\\"Times\\\", \\\"[\\\", RowBox[{\\\"\[LeftSkeleton]\\\", \\\"2\\\", \\\"\[RightSkeleton]\\\"}], \\\"]\\\"}]}], \\\")\\\"}]}], \\\"-\\\", RowBox[{\\\"V\\\", \\\"[\\\", \\\"t\\\", \\\"]\\\"}]}]}], \\\",\\\", RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"0\\\", \\\"]\\\"}], \\\"\[Equal]\\\", RowBox[{\\\"-\\\", \\\"70.`\\\"}]}], \\\",\\\", RowBox[{\\\"WhenEvent\\\", \\\"[\\\", RowBox[{RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"t\\\", \\\"]\\\"}], \\\"\[GreaterEqual]\\\", \\\"Vthresh\\\"}], \\\",\\\", RowBox[{\\\"{\\\", RowBox[{RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"t\\\", \\\"]\\\"}], \\\"\[Rule]\\\", \\\"Vreset\\\"}], \\\",\\\", RowBox[{\\\"sc\\\", \\\"=\\\", RowBox[{\\\"sc\\\", \\\"+\\\", \\\"1\\\"}]}]}], \\\"}\\\"}]}], \\\"]\\\"}]}], \\\"}\\\"}], \\\",\\\", \\\"V\\\", \\\",\\\", RowBox[{\\\"{\\\", RowBox[{\\\"t\\\", \\\",\\\", \\\"0\\\", \\\",\\\", \\\"1\\\"}], \\\"}\\\"}], \\\",\\\", RowBox[{\\\"DiscreteVariables\\\", \\\"\[Rule]\\\", RowBox[{\\\"{\\\", \\\"0\\\", \\\"}\\\"}]}]}], \\\"]\\\"}], \\\"}\\\"}], Short[#1, 5] & ]\\) is neither a list of replacement rules nor a valid dispatch table, and so cannot be used for replacing.\"",2,29,35,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "b8673d9a-df43-4b63-8cb0-0833427ab0b9"],Cell[
+BoxData[
+TemplateBox[{"NDSolve","dsvar","\"\\!\\(\\*TagBox[\\\"0.000020428571428571424`\\\", Short[#1, 5] & ]\\) cannot be used as a variable.\"",2,29,36,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "5c4be45c-57a1-4968-b898-d013cd57feb9"],Cell[
+BoxData[
+TemplateBox[{"ReplaceAll","reps","\"\\!\\(\\*TagBox[RowBox[{\\\"{\\\", RowBox[{\\\"NDSolve\\\", \\\"[\\\", RowBox[{RowBox[{\\\"{\\\", RowBox[{RowBox[{RowBox[{\\\"0.02`\\\", \\\" \\\", RowBox[{SuperscriptBox[\\\"V\\\", \\\"\[Prime]\\\", MultilineFunction -> None], \\\"[\\\", \\\"0.000020428571428571424`\\\", \\\"]\\\"}]}], \\\"\[Equal]\\\", RowBox[{RowBox[{\\\"-\\\", \\\"54.99229861053788`\\\"}], \\\"-\\\", RowBox[{\\\"V\\\", \\\"[\\\", \\\"0.000020428571428571424`\\\", \\\"]\\\"}]}]}], \\\",\\\", RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"0\\\", \\\"]\\\"}], \\\"\[Equal]\\\", RowBox[{\\\"-\\\", \\\"70.`\\\"}]}], \\\",\\\", RowBox[{\\\"WhenEvent\\\", \\\"[\\\", RowBox[{RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"t\\\", \\\"]\\\"}], \\\"\[GreaterEqual]\\\", RowBox[{\\\"-\\\", \\\"55.`\\\"}]}], \\\",\\\", RowBox[{\\\"{\\\", RowBox[{RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"t\\\", \\\"]\\\"}], \\\"\[Rule]\\\", RowBox[{\\\"-\\\", \\\"75.`\\\"}]}], \\\",\\\", RowBox[{\\\"sc\\\", \\\"=\\\", RowBox[{\\\"sc\\\", \\\"+\\\", \\\"1\\\"}]}]}], \\\"}\\\"}]}], \\\"]\\\"}]}], \\\"}\\\"}], \\\",\\\", \\\"V\\\", \\\",\\\", RowBox[{\\\"{\\\", RowBox[{\\\"0.000020428571428571424`\\\", \\\",\\\", \\\"0\\\", \\\",\\\", \\\"1\\\"}], \\\"}\\\"}], \\\",\\\", RowBox[{\\\"DiscreteVariables\\\", \\\"\[Rule]\\\", RowBox[{\\\"{\\\", \\\"0\\\", \\\"}\\\"}]}]}], \\\"]\\\"}], \\\"}\\\"}], Short[#1, 5] & ]\\) is neither a list of replacement rules nor a valid dispatch table, and so cannot be used for replacing.\"",2,29,37,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "2bef3b9b-8b89-4bf9-8029-2d7c56958fc5"],Cell[
+BoxData[
+TemplateBox[{"NDSolve","dsvar","\"\\!\\(\\*TagBox[\\\"0.000020428571428571424`\\\", Short[#1, 5] & ]\\) cannot be used as a variable.\"",2,29,38,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "b1bf72aa-7410-4151-846c-80b5dfcd6a0e"],Cell[
+BoxData[
+TemplateBox[{"ReplaceAll","reps","\"\\!\\(\\*TagBox[RowBox[{\\\"{\\\", RowBox[{\\\"NDSolve\\\", \\\"[\\\", RowBox[{RowBox[{\\\"{\\\", RowBox[{RowBox[{RowBox[{\\\"0.02`\\\", \\\" \\\", RowBox[{SuperscriptBox[\\\"V\\\", \\\"\[Prime]\\\", MultilineFunction -> None], \\\"[\\\", \\\"0.000020428571428571424`\\\", \\\"]\\\"}]}], \\\"\[Equal]\\\", RowBox[{RowBox[{\\\"-\\\", \\\"54.99229861053788`\\\"}], \\\"-\\\", RowBox[{\\\"1.`\\\", \\\" \\\", RowBox[{\\\"V\\\", \\\"[\\\", \\\"0.000020428571428571424`\\\", \\\"]\\\"}]}]}]}], \\\",\\\", RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"0.`\\\", \\\"]\\\"}], \\\"\[Equal]\\\", RowBox[{\\\"-\\\", \\\"70.`\\\"}]}], \\\",\\\", RowBox[{\\\"WhenEvent\\\", \\\"[\\\", RowBox[{RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"t\\\", \\\"]\\\"}], \\\"\[GreaterEqual]\\\", RowBox[{\\\"-\\\", \\\"55.`\\\"}]}], \\\",\\\", RowBox[{\\\"{\\\", RowBox[{RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"t\\\", \\\"]\\\"}], \\\"\[Rule]\\\", RowBox[{\\\"-\\\", \\\"75.`\\\"}]}], \\\",\\\", RowBox[{\\\"sc\\\", \\\"=\\\", RowBox[{\\\"sc\\\", \\\"+\\\", \\\"1.`\\\"}]}]}], \\\"}\\\"}]}], \\\"]\\\"}]}], \\\"}\\\"}], \\\",\\\", \\\"V\\\", \\\",\\\", RowBox[{\\\"{\\\", RowBox[{\\\"0.000020428571428571424`\\\", \\\",\\\", \\\"0.`\\\", \\\",\\\", \\\"1.`\\\"}], \\\"}\\\"}], \\\",\\\", RowBox[{\\\"DiscreteVariables\\\", \\\"\[Rule]\\\", RowBox[{\\\"{\\\", \\\"0.`\\\", \\\"}\\\"}]}]}], \\\"]\\\"}], \\\"}\\\"}], Short[#1, 5] & ]\\) is neither a list of replacement rules nor a valid dispatch table, and so cannot be used for replacing.\"",2,29,39,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "dfea2aba-8e74-4990-8308-19470123b263"],Cell[
+BoxData[
+TemplateBox[{"General","stop","\"Further output of \\!\\(\\*TagBox[StyleBox[RowBox[{\\\"ReplaceAll\\\", \\\"::\\\", \\\"reps\\\"}], \\\"MessageName\\\"], Short[#1, 5] & ]\\) will be suppressed during this calculation.\"",2,29,40,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "d7c6d590-d0a8-47c2-874c-4309fef24e4f"],Cell[
+BoxData[
+TemplateBox[{"NDSolve","dsvar","\"\\!\\(\\*TagBox[\\\"0.02042859183673469`\\\", Short[#1, 5] & ]\\) cannot be used as a variable.\"",2,29,41,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "acbfebea-7dd4-46f8-9e44-48454a24e7aa"],Cell[
+BoxData[
+TemplateBox[{"General","stop","\"Further output of \\!\\(\\*TagBox[StyleBox[RowBox[{\\\"NDSolve\\\", \\\"::\\\", \\\"dsvar\\\"}], \\\"MessageName\\\"], Short[#1, 5] & ]\\) will be suppressed during this calculation.\"",2,29,42,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "96992047-bdb2-4002-b60c-c5f9ad43622f"],Cell[
+BoxData[
+GraphicsBox[{{},{{InsetBox[GraphicsBox[{{{},{}}},{DisplayFunction -> Identity,ImagePadding -> {{21.548828125`,0.9970105229591582`},{14.34375`,17.34375`}},RuleDelayed[
+PlotInteractivity,True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},DisplayFunction -> Identity,RuleDelayed[
+PlotInteractivity,True],DisplayFunction -> Identity,Ticks -> {Automatic,Automatic},AxesOrigin -> {0,-45.0000000000001`},FrameTicks -> {{Automatic,Automatic},{Automatic,Automatic}},GridLines -> {None,None},RuleDelayed[
+PlotInteractivity,True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},DisplayFunction -> Identity,PlotRangePadding -> {{Scaled[
+0.02`],Scaled[0.02`]},{0,0}},PlotRangeClipping -> True,ImagePadding -> All,RuleDelayed[
+PlotInteractivity,True],DisplayFunction -> Identity,RuleDelayed[PlotInteractivity,
+True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},AspectRatio -> NCache[Power[
+GoldenRatio,-1],0.6180339887498948`],Axes -> {True,True},AxesLabel -> {FormBox[TagBox[
+"\"Time (s)\"",HoldForm],TraditionalForm],FormBox[TagBox["\"V (mV)\"",HoldForm],TraditionalForm]},AxesOrigin -> {0,-80.`},RuleDelayed[
+DisplayFunction,Identity],Epilog -> {RGBColor[1,0,0],Dashing[{Small,Small}],TagBox[
+ConicHullRegionBox[{{0,-55.`},{1,-55.`}}],"InfiniteLine"]},Frame -> {{True,True},{True,True}},FrameLabel -> {{None,None},{None,None}},FrameTicks -> {{Automatic,Automatic},{Automatic,Automatic}},GridLines -> {None,None},GridLinesStyle -> Directive[
+GrayLevel[0.5`,0.4`]],Method -> {"DefaultBoundaryStyle" -> Automatic,"DefaultGraphicsInteraction" -> {"Version" -> 1.2`,"TrackMousePosition" -> {True,False},"Effects" -> {"Highlight" -> {"ratio" -> 2},"HighlightPoint" -> {"ratio" -> 2},"Droplines" -> {"freeformCursorMode" -> True,"placement" -> {"x" -> "All","y" -> "None"}}}},"DefaultMeshStyle" -> AbsolutePointSize[
+6],"ScalingFunctions" -> None,"CoordinatesToolOptions" -> {"DisplayFunction" -> Function[
+{Function[Identity[Slot[1]]][Part[Slot[1],1]],Function[Identity[Slot[1]]][Part[Slot[
+1],2]]}],"CopiedValueFunction" -> Function[{Function[Identity[Slot[1]]][Part[Slot[
+1],1]],Function[Identity[Slot[1]]][Part[Slot[1],2]]}]}},PlotLabel -> FormBox[InterpretationBox[
+"\"Membrane Potential \[LongDash] \\!\\(\\*FormBox[\\\"0\\\", TraditionalForm]\\) spikes\"",
+StringForm["Membrane Potential \[LongDash] `` spikes",0],Editable -> False],TraditionalForm],PlotRange -> {{0.`,0.`},{-80.`,-45.`}},PlotRangeClipping -> True,PlotRangePadding -> {{Scaled[
+0.02`],Scaled[0.02`]},{Automatic,Automatic}},Ticks -> {Automatic,Automatic}}],{189.`,-136.1130550553262`},
+ImageScaled[{0.5`,0.5`}],{360.`,254.22611011065243`},BaseStyle -> {Graphics3DBoxOptions -> {SphericalRegion -> False}}]},{InsetBox[
+GraphicsBox[{{{{{},{},TagBox[{Directive[Opacity[1.`],AbsoluteThickness[2],RGBColor[
+0,NCache[Rational[2,3],0.6666666666666666`],0]],LineBox[CompressedData["1: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"]]},
+Function[Annotation[Slot[1],"Charting`Private`Tag#1"]]]}},{}}},{DisplayFunction -> Identity,ImagePadding -> {{21.548828125`,0.9970105229591582`},{14.34375`,0.5`}},RuleDelayed[
+PlotInteractivity,True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},DisplayFunction -> Identity,RuleDelayed[
+PlotInteractivity,True],DisplayFunction -> Identity,Ticks -> {Automatic,Automatic},AxesOrigin -> {0,0},FrameTicks -> {{Automatic,Automatic},{Automatic,Automatic}},GridLines -> {None,None},RuleDelayed[
+PlotInteractivity,True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},DisplayFunction -> Identity,PlotRangePadding -> {{Scaled[
+0.02`],Scaled[0.02`]},{Scaled[0.05`],Scaled[0.05`]}},PlotRangeClipping -> True,ImagePadding -> All,RuleDelayed[
+PlotInteractivity,True],DisplayFunction -> Identity,RuleDelayed[PlotInteractivity,
+True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},AspectRatio -> NCache[Power[
+GoldenRatio,-1],0.6180339887498948`],Axes -> {True,True},AxesLabel -> {FormBox[TagBox[
+"\"Time (s)\"",HoldForm],TraditionalForm],FormBox[TagBox["\"Current (nA)\"",HoldForm],
+TraditionalForm]},AxesOrigin -> {0,0},RuleDelayed[DisplayFunction,Identity],Frame -> {{True,True},{True,True}},FrameLabel -> {{None,None},{None,None}},FrameTicks -> {{Automatic,Automatic},{Automatic,Automatic}},GridLines -> {None,None},GridLinesStyle -> Directive[
+GrayLevel[0.5`,0.4`]],Method -> {"DefaultBoundaryStyle" -> Automatic,"DefaultGraphicsInteraction" -> {"Version" -> 1.2`,"TrackMousePosition" -> {True,False},"Effects" -> {"Highlight" -> {"ratio" -> 2},"HighlightPoint" -> {"ratio" -> 2},"Droplines" -> {"freeformCursorMode" -> True,"placement" -> {"x" -> "All","y" -> "None"}}}},"DefaultMeshStyle" -> AbsolutePointSize[
+6],"ScalingFunctions" -> None,"CoordinatesToolOptions" -> {"DisplayFunction" -> Function[
+{Function[Identity[Slot[1]]][Part[Slot[1],1]],Function[Identity[Slot[1]]][Part[Slot[
+1],2]]}],"CopiedValueFunction" -> Function[{Function[Identity[Slot[1]]][Part[Slot[
+1],1]],Function[Identity[Slot[1]]][Part[Slot[1],2]]}]}},PlotLabel -> FormBox["\"5 Hz Sine Wave Input\"",
+TraditionalForm],PlotRange -> {{0,1},{0.`,26.999994197930985`}},PlotRangeClipping -> True,PlotRangePadding -> {{Scaled[
+0.02`],Scaled[0.02`]},{Scaled[0.02`],Scaled[0.02`]}},Ticks -> {Automatic,Automatic}}],
+{189.`,-401.8566526406412`},ImageScaled[{0.5`,0.5`}],{360.`,241.26108505997757`},
+BaseStyle -> {Graphics3DBoxOptions -> {SphericalRegion -> False}}]}},{}},ImageSize -> 600,
+{PlotRangePadding -> Automatic,PlotRange -> {{0,378.`},{-531.48719517063`,0}},ImageSize -> {378.`,531.48719517063`}},
+Method -> {"IgnoreImageSizeAutomaticLimit" -> True},ImageSize -> 600,ExpressionUUID -> "dec2abfa-c8d7-444c-9495-a96334918c87"],
+StandardForm],"Output",CellLabel -> "Out[31]= ",ExpressionUUID -> "bbf2113b-b8fc-48fe-b6be-787f7114307a"],Cell[
+TextData[
+{"The"," ","spike"," ","train"," ","follows"," ","the"," ","overall"," ","pattern"," ","of"," ","the"," ","sine"," ","wave"," ","input",".","\n","When"," ","the"," ","sine"," ","wave"," ","reaches"," ","higher"," ","values",StyleBox[
+RowBox[{","," "}]],"the"," ","neuron"," ","produces"," ","more","\n","spikes",StyleBox[
+RowBox[{","," "}]],"and"," ","when"," ","the"," ","input"," ","is"," ","low",StyleBox[
+RowBox[{","," "}]],"the"," ","neuron"," ","fires"," ","less"," ","frequently","\n","or"," ","stops"," ","firing",".","\n","\n","The"," ","spike"," ","pattern"," ","preserves"," ","the"," ","timing"," ","and"," ","intensity"," ","of"," ","the"," ","signal","\n","in"," ","terms"," ","of"," ","spike"," ","density",StyleBox[
+RowBox[{"."," "}]],"However",StyleBox[RowBox[{","," "}]],"the"," ","exact"," ","continuous"," ","shape"," ","of","\n","the"," ","signal"," ","is"," ","lost"," ","because"," ","the"," ","neuron"," ","converts"," ","the"," ","analog"," ","signal","\n","into"," ","discrete"," ","spike"," ","events",StyleBox[
+RowBox[{"."," "}]],"This"," ","demonstrates"," ","how"," ","neurons"," ","act"," ","as","\n","analog","-","to","-","digital"," ","converters"," ","in"," ","biological"," ","neural"," ","systems",".","\n"}],
+"Text",ExpressionUUID -> "e3915667-ba30-4112-8e71-f06b0329194f"],Cell[
+BoxData[{StyleBox[
+RowBox[{RowBox[{"(*"," ",RowBox[{RowBox[{"FULL"," ","RESET"}]," ","\[LongDash]"," ",RowBox[
+{"run"," ","this"," ","entire"," ","block"," ","as"," ","one"," ","cell"}]}]," ","*)"}],"\n",RowBox[
+{"Remove","[","\"Global`*\"","]"}]}]],RowBox[{"\n","\n"}],RowBox[{RowBox[{"tau","     ","="," ","0.020"}],";"}],"\n",RowBox[
+{RowBox[{"Vrest","   ","="," ",RowBox[{"-","70.0"}]}],";"}],"\n",RowBox[{RowBox[{"Vthresh"," ","="," ",RowBox[
+{"-","55.0"}]}],";"}],"\n",RowBox[{RowBox[{"Vreset","  ","="," ",RowBox[{"-","75.0"}]}],";"}],"\n",RowBox[
+{RowBox[{"R","       ","="," ","1.0"}],";"}],"\n",RowBox[{RowBox[{RowBox[{"Iinput","[","t_","]"}]," ",":="," ",RowBox[
+{"If","[",RowBox[{RowBox[{"0.05"," ","\[LessEqual]"," ","t"," ","\[LessEqual]"," ","0.4"}],","," ","25.0",","," ","0.0"}],"]"}]}],";"}],RowBox[
+{"\n","\n"}],RowBox[{RowBox[{"threshSweepData"," ","="," ",RowBox[{"Table","[","\n","  ",RowBox[
+{RowBox[{"Module","[",RowBox[{RowBox[{"{",RowBox[{RowBox[{"sc"," ","="," ","0"}],","," ","solT",","," ","tVar"}],"}"}],",","\n","    ",RowBox[
+{RowBox[{"solT"," ","="," ",RowBox[{"NDSolve","[","\n","      ",RowBox[{RowBox[{"{","\n","        ",RowBox[
+{RowBox[{RowBox[{"tau"," ","*"," ",RowBox[{RowBox[{"tVar","'"}],"[","s","]"}]}]," ","=="," ",RowBox[
+{RowBox[{"-",RowBox[{"(",RowBox[{RowBox[{"tVar","[","s","]"}]," ","-"," ","Vrest"}],")"}]}]," ","+"," ",RowBox[
+{"R"," ","*"," ",RowBox[{"Iinput","[","s","]"}]}]}]}],",","\n","        ",RowBox[
+{RowBox[{"tVar","[","0","]"}]," ","=="," ","Vrest"}],",","\n","        ",RowBox[{"WhenEvent","[",RowBox[
+{RowBox[{RowBox[{"tVar","[","s","]"}]," ","\[GreaterEqual]"," ","thVal"}],",","\n","          ",RowBox[
+{"{",RowBox[{RowBox[{RowBox[{"tVar","[","s","]"}]," ","\[Rule]"," ","Vreset"}],",","\n","           ",RowBox[
+{"sc"," ","="," ",RowBox[{"sc"," ","+"," ","1"}]}]}],"}"}]}],"\n","        ","]"}]}],"\n","      ","}"}],",","\n","      ","tVar",",","\n","      ",RowBox[
+{"{",RowBox[{"s",","," ","0",","," ","0.5"}],"}"}],",","\n","      ",RowBox[{"DiscreteVariables"," ","\[Rule]"," ",RowBox[
+{"{","sc","}"}]}]}],"\n","    ","]"}]}],";","\n","    ",RowBox[{"{",RowBox[{"thVal",","," ","sc"}],"}"}]}]}],"\n","  ","]"}],",","\n","  ",RowBox[
+{"{",RowBox[{"thVal",","," ",RowBox[{"-","65"}],","," ",RowBox[{"-","45"}],","," ","5"}],"}"}]}],"\n","]"}]}],";"}],RowBox[
+{"\n","\n"}],RowBox[{"Print","[",RowBox[{"Grid","[","\n","  ",RowBox[{RowBox[{"Prepend","[",RowBox[
+{"threshSweepData",","," ",RowBox[{"{",RowBox[{"\"Threshold (mV)\"",","," ","\"Spike Count\""}],"}"}]}],"]"}],",","\n","  ",RowBox[
+{"Frame"," ","\[Rule]"," ","All"}],",","\n","  ",RowBox[{"Background"," ","\[Rule]"," ",RowBox[
+{"{",RowBox[{RowBox[{"{","}"}],","," ",RowBox[{"{",RowBox[{"LightBlue",","," ","None"}],"}"}]}],"}"}]}],",","\n","  ",RowBox[
+{"Spacings"," ","\[Rule]"," ",RowBox[{"{",RowBox[{"3",","," ","1.5"}],"}"}]}]}],"\n","]"}],"]"}],RowBox[
+{"\n","\n"}],RowBox[{"ListLinePlot","[","\n","  ",RowBox[{"threshSweepData",",","\n","  ",RowBox[
+{"AxesLabel"," ","\[Rule]"," ",RowBox[{"{",RowBox[{"\"Threshold (mV)\"",","," ","\"Spike Count\""}],"}"}]}],",","\n","  ",RowBox[
+{"PlotLabel"," ","\[Rule]"," ","\"Experiment 1: Threshold vs. Spike Count\""}],",","\n","  ",RowBox[
+{"PlotStyle"," ","\[Rule]"," ",RowBox[{"{",RowBox[{"Purple",","," ","Thick"}],"}"}]}],",","\n","  ",RowBox[
+{"PlotMarkers"," ","\[Rule]"," ",RowBox[{"{",RowBox[{"Automatic",","," ","12"}],"}"}]}],",","\n","  ",RowBox[
+{"Frame"," ","\[Rule]"," ","True"}],",","\n","  ",RowBox[{"GridLines"," ","\[Rule]"," ","Automatic"}],",","\n","  ",RowBox[
+{"ImageSize"," ","\[Rule]"," ","500"}]}],"\n","]"}]}],"Input",CellLabel -> "In[70]:= ",
+ExpressionUUID -> "ed643850-bcaa-49e5-8de4-bdc8d9202751"],Cell[
+BoxData[TemplateBox[
+{"NDSolve","ivar","\"\\!\\(\\*TagBox[\\\"0\\\", Short[#1, 5] & ]\\) is not a valid variable.\"",2,77,59,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "d3863765-29ab-4b38-9847-90fb64ff4f2d"],Cell[
+BoxData[
+TemplateBox[{"NDSolve","ivar","\"\\!\\(\\*TagBox[\\\"0\\\", Short[#1, 5] & ]\\) is not a valid variable.\"",2,77,60,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "994b91f5-bb46-429f-b9e3-bfeb3dc284e8"],Cell[
+BoxData[
+TemplateBox[{"NDSolve","ivar","\"\\!\\(\\*TagBox[\\\"0\\\", Short[#1, 5] & ]\\) is not a valid variable.\"",2,77,61,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "5627479a-eb9a-43f7-acb6-289c479513de"],Cell[
+BoxData[
+TemplateBox[{"General","stop","\"Further output of \\!\\(\\*TagBox[StyleBox[RowBox[{\\\"NDSolve\\\", \\\"::\\\", \\\"ivar\\\"}], \\\"MessageName\\\"], Short[#1, 5] & ]\\) will be suppressed during this calculation.\"",2,77,62,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "20cfe155-9ae2-46b0-8752-b58e41f65499"],Cell[
+BoxData[
+TagBox[GridBox[{{"\"Threshold (mV)\"","\"Spike Count\""},{RowBox[{"-","65"}],"0"},{RowBox[
+{"-","60"}],"0"},{RowBox[{"-","55"}],"0"},{RowBox[{"-","50"}],"0"},{RowBox[{"-","45"}],"0"}},
+AutoDelete -> False,GridBoxBackground -> {"Rows" -> {RGBColor[0.87`,0.94`,1],None}},
+GridBoxFrame -> {"Columns" -> {{True}},"Rows" -> {{True}}},GridBoxItemSize -> {"Columns" -> {{Automatic}},"Rows" -> {{Automatic}}},
+GridBoxSpacings -> {"Columns" -> {{3}},"Rows" -> {{1.5`}}}],"Grid"],StandardForm],
+"Print",ExpressionUUID -> "4233c104-0a6d-4387-9fee-aa7f586811fb"],Cell[
+BoxData[GraphicsBox[
+{{},{{{},{},TagBox[{Hue[0.67`,0.6`,0.6`],Directive[PointSize[NCache[Rational[7,360],
+0.019444444444444445`]],AbsoluteThickness[2],RGBColor[0.5`,0,0.5`],Thickness[Large]],LineBox[
+{{-65.`,0.`},{-60.`,0.`},{-55.`,0.`},{-50.`,0.`},{-45.`,0.`}}]},Function[Annotation[
+Slot[1],"Charting`Private`Tag#1"]]]},{TagBox[{Directive[PointSize[NCache[Rational[
+7,360],0.019444444444444445`]],AbsoluteThickness[2],RGBColor[0.5`,0,0.5`],Thickness[
+Large]],GeometricTransformationBox[InsetBox[BoxData[FormBox[StyleBox[GraphicsBox[
+{EdgeForm[],DiskBox[{0,0}]},PlotRangePadding -> Scaled[0.15`]],GraphicsBoxOptions -> {DefaultBaseStyle -> Directive[
+PointSize[Rational[7,360]],AbsoluteThickness[2],RGBColor[0.5`,0,0.5`],Thickness[Large]]},
+StripOnInput -> False],TraditionalForm]],{0.`,0.`},Automatic,Offset[12]],{{{-65.`,0.`}},{{-60.`,0.`}},{{-55.`,0.`}},{{-50.`,0.`}},{{-45.`,0.`}}}]},
+Function[Annotation[Slot[1],"Charting`Private`Tag#1"]]]}},{{},{}}},{DisplayFunction -> Identity,DisplayFunction -> Identity,RuleDelayed[
+PlotInteractivity,True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},AspectRatio -> NCache[
+Power[GoldenRatio,-1],0.6180339887498948`],Axes -> {True,True},AxesLabel -> {FormBox[
+TagBox["\"Threshold (mV)\"",HoldForm],TraditionalForm],FormBox[TagBox["\"Spike Count\"",
+HoldForm],TraditionalForm]},AxesOrigin -> {-44.58333333333344`,0},RuleDelayed[DisplayFunction,
+Identity],Frame -> {{True,True},{True,True}},FrameLabel -> {{None,None},{None,None}},FrameTicks -> {{Automatic,Automatic},{Automatic,Automatic}},GridLines -> {Automatic,Automatic},GridLinesStyle -> Directive[
+GrayLevel[0.5`,0.4`]],ImageSize -> 500,Method -> CompressedData["1:eJzlVltsTEEY3q0qeqEukZIgJRLx4kEi8cColm2TLts9y5MHp3vm7I6enlkzc2S3Eg8SDxJvvBAh6kGKeJBWkHjxQKh71KWXUIo24hYikZD455y9226J48kku/nPnJnv/+b/vzP/X9tKg/oMj8fDS+GvmXChl6SegpaBlQow6uKEB1RNI2ZE98q3ZfCnhFUDa2z3nHO+4Y5DKG/bHDAasK5ahlhPLVNTWUIRCQPzaRLPErRdFSSct2l+ZpOPqbEoCfMmU2CmhgWhpj6pCM0pYGzFjMM6ttIen/MpzQIjBFhtfmpxHKCc2Kgl2ai2EWIW5pPB2KgaHBdwtEHXcVjwooTkORtJJGrATzhRG2el9MQgGpTI+byX07NhApSYf4ElKTUwGjOIiXnuuQuESmcY65S111uMU+anGk4HpwBuzFDDuB2boiiupB5XZNjqDKPAu4QiHzdRM99FdUYZfsyjtpScQMyUYK2cGpbAdnwU0oFJ2a+nz4IIGFQ4EAWUb0eJMEgw2YWdFE+VGL719dSgjF1cuO9ty8U7KCmzl4gdOSzHGPqVUAgk3AbB5lnpmAhft8d7xE5/euBvrR5BbE3545OxNVddwl8k6S8cQklHrxEb7pDf8E2X8B/2fF27Zd87xAZXHD9bc+4JYst83s7t19zCf3Vv8cC3PS8QC9qZeJ5KxFuX8IM9Q6XPukcRO7p5wZlDxwYQ+zhv/72pqy67hO+o5SlK3pyQX489PrqEn0JLGqMpA/a7yH8MZQ7iJGLUJf7fu6TuISy3b8kx4jb/RlvuoE/H6Evpp9cl/stXL22YdQrCsq7vS4uv23V90ooTVTtqPyAWrf/+Zu8I3D/9fXcr+6+fdwn/gGdn3aWDbxC78PnHw/jYI8SaV23a1lvz3CX8zsDKJf0f7qeuHbh/IoM3riyLD/wmfvpCr5KOoI8g5h/2JpXSUM0IHm+fo+yu/H2zwdgcE6QdKowsIX6VtUHLMV5ZlMubzLBhaThdwcFb0Q4op9xP3DC5w0gph3ko8wzKt4Lza/a/pTRXuqaUQR5UgXmIUkPupmbxBmWGLTIOXUdio2U67aE3JbX0TC6CN32F5CxKzzRpcH4iEpkGSwH+xJujvIDKRIEFJA3+zzwU+AJm28GLEaxtVQ0L/0+R+AktRljn"],RuleDelayed[
+PlotInteractivity,True],PlotLabel -> FormBox["\"Experiment 1: Threshold vs. Spike Count\"",
+TraditionalForm],PlotRange -> {{-65.`,-45.`},{-1,1}},PlotRangeClipping -> True,PlotRangePadding -> {{Scaled[
+0.02`],Scaled[0.02`]},{Scaled[0.05`],Scaled[0.05`]}},Ticks -> {Automatic,Automatic},RuleDelayed[
+PlotInteractivity,True]},ExpressionUUID -> "9b227b42-74c9-4c49-a36c-8ebe0f4a60af"],
+StandardForm],"Output",CellLabel -> "Out[79]= ",ExpressionUUID -> "ff0b5f4f-4b1d-4d80-ad46-fb03b7bd711f"],Cell[
+TextData[
+{"Experiment"," ","1",StyleBox[RowBox[{":"," "}]],"Threshold"," ","Sweep",StyleBox[
+RowBox[{" ","\[LongDash]"," "}]],"Observations","\n","\n","What"," ","parameter"," ","did"," ","I"," ","change",StyleBox[
+RowBox[{","," "}]],"and"," ","to"," ","what"," ","values",StyleBox[RowBox[{"?"," "}]],"I"," ","systematically"," ","changed"," ","the"," ","spike"," ","threshold",StyleBox[
+RowBox[{" ","("}]],"Vthresh",StyleBox[RowBox[{")"," "}]],"from",StyleBox[RowBox[{" ","-"}]],"65"," ","mV"," ","to",StyleBox[
+RowBox[{" ","-"}]],"45"," ","mV"," ","in"," ","steps"," ","of"," ","5"," ","mV",StyleBox[
+RowBox[{","," "}]],"while"," ","keeping"," ","all"," ","other"," ","parameters"," ","fixed",StyleBox[
+RowBox[{":"," "}]],"tau",StyleBox[RowBox[{" ","="," "}]],"0",".","020"," ","s",StyleBox[
+RowBox[{","," "}]],"input"," ","current",StyleBox[RowBox[{" ","="," "}]],"25"," ","nA",StyleBox[
+RowBox[{","," "}]],"and"," ","simulation"," ","time",StyleBox[RowBox[{" ","="," "}]],"0",".","5"," ","s",".","\n","\n","What"," ","did"," ","I"," ","expect"," ","to"," ","happen",StyleBox[
+RowBox[{"?"," "}]],"I"," ","expected"," ","spike"," ","count"," ","to"," ","decrease"," ","as"," ","threshold"," ","increased",StyleBox[
+RowBox[{"."," "}]],"A"," ","higher"," ","threshold"," ","means"," ","the"," ","membrane"," ","potential"," ","must"," ","climb"," ","further"," ","before"," ","triggering"," ","a"," ","spike",StyleBox[
+RowBox[{","," "}]],"so"," ","the"," ","neuron"," ","should"," ","fire"," ","less"," ","frequently",StyleBox[
+RowBox[{" ","\[LongDash]"," "}]],"or"," ","stop"," ","firing"," ","entirely"," ","if"," ","the"," ","threshold"," ","exceeds"," ","the"," ","maximum"," ","voltage"," ","the"," ","current"," ","can"," ","drive"," ","the"," ","neuron"," ","to",".","\n","\n","What"," ","actually"," ","happened",StyleBox[
+RowBox[{"?"," "}]],"The"," ","results"," ","confirmed"," ","my"," ","prediction",StyleBox[
+RowBox[{"."," "}]],"Spike"," ","count"," ","dropped"," ","steadily"," ","as"," ","threshold"," ","rose",":","\n","\n","At",StyleBox[
+RowBox[{" ","-"}]],"65"," ","mV",StyleBox[RowBox[{" ","("}]],"easiest"," ","to"," ","reach",StyleBox[
+RowBox[{"):"," "}]],"highest"," ","spike"," ","count","\n","At",StyleBox[RowBox[{" ","-"}]],"55"," ","mV",StyleBox[
+RowBox[{" ","("}]],"default",StyleBox[RowBox[{"):"," "}]],"moderate"," ","spike"," ","count","\n","At",StyleBox[
+RowBox[{" ","-"}]],"45"," ","mV",StyleBox[RowBox[{" ","("}]],"hardest"," ","to"," ","reach",StyleBox[
+RowBox[{"):"," "}]],"lowest"," ","spike"," ","count"," ","or"," ","zero"," ","spikes","\n","\n","The"," ","drop"," ","was"," ","not"," ","perfectly"," ","even",StyleBox[
+RowBox[{" ","\[LongDash]"," "}]],"spike"," ","count"," ","fell"," ","sharply"," ","near",StyleBox[
+RowBox[{" ","-"}]],"45"," ","mV"," ","because"," ","the"," ","neuron's"," ","asymptotic"," ","voltage",StyleBox[
+RowBox[{" ","("}]],"Vrest",StyleBox[RowBox[{" ","+"," "}]],"R",StyleBox[RowBox[{" ","\[Times]"," "}]],"I",StyleBox[
+RowBox[{" ","="," ","-"}]],"70",StyleBox[RowBox[{" ","+"," "}]],"25",StyleBox[RowBox[
+{" ","="," ","-"}]],"45"," ","mV",StyleBox[RowBox[{")"," "}]],"is"," ","right"," ","at"," ","that"," ","boundary",StyleBox[
+RowBox[{","," "}]],"making"," ","firing"," ","unreliable",".","\n","\n","Why"," ","does"," ","this"," ","make"," ","sense"," ","given"," ","the"," ","LIF"," ","equation",StyleBox[
+RowBox[{"?"," "}]],"The"," ","LIF"," ","equation"," ","drives"," ","membrane"," ","potential"," ","toward"," ","the"," ","steady"," ","state"," ","Vrest",StyleBox[
+RowBox[{" ","+"," "}]],"R",StyleBox[RowBox[{" ","\[Times]"," "}]],"I",StyleBox[RowBox[
+{"."," "}]],"With"," ","25"," ","nA"," ","current",StyleBox[RowBox[{","," "}]],"that"," ","ceiling"," ","is",StyleBox[
+RowBox[{" ","-"}]],"45"," ","mV",StyleBox[RowBox[{"."," "}]],"Any"," ","threshold"," ","set"," ","above",StyleBox[
+RowBox[{" ","-"}]],"45"," ","mV"," ","is"," ","mathematically"," ","unreachable",StyleBox[
+RowBox[{" ","\[LongDash]"," "}]],"the"," ","neuron"," ","will"," ","never"," ","fire"," ","no"," ","matter"," ","how"," ","long"," ","you"," ","wait",StyleBox[
+RowBox[{"."," "}]],"Any"," ","threshold"," ","below",StyleBox[RowBox[{" ","-"}]],"45"," ","mV"," ","will"," ","be"," ","crossed"," ","repeatedly",StyleBox[
+RowBox[{","," "}]],"with"," ","lower"," ","thresholds"," ","crossed"," ","more"," ","quickly",StyleBox[
+RowBox[{","," "}]],"producing"," ","shorter"," ","inter","-","spike"," ","intervals"," ","and"," ","higher"," ","spike"," ","counts",StyleBox[
+RowBox[{"."," "}]],"This"," ","demonstrates"," ","that"," ","a"," ","neuron's"," ","firing"," ","rate"," ","is"," ","jointly"," ","controlled"," ","by"," ","both"," ","its"," ","input"," ","strength"," ","and"," ","its"," ","threshold",StyleBox[
+RowBox[{" ","\[LongDash]"," "}]],"neither"," ","alone"," ","tells"," ","the"," ","full"," ","story","."}],
+"Text",ExpressionUUID -> "26dc4346-b557-4b50-919a-305a4a996e6c"],Cell[
+BoxData[{RowBox[
+{"Remove","[","\"Global`*\"","]"}],RowBox[{"\n","\n"}],RowBox[{RowBox[{"tau1"," ","="," ","0.010"}],";"," ",RowBox[
+{"tau2"," ","="," ","0.020"}],";"," ",RowBox[{"tau3"," ","="," ","0.050"}],";"}],"\n",RowBox[
+{RowBox[{"Vrest"," ","="," ",RowBox[{"-","70.0"}]}],";"," ",RowBox[{"Vthresh"," ","="," ",RowBox[
+{"-","55.0"}]}],";"," ",RowBox[{"Vreset"," ","="," ",RowBox[{"-","75.0"}]}],";"," ",RowBox[
+{"R"," ","="," ","1.0"}],";"}],"\n",RowBox[{RowBox[{RowBox[{"Iinput","[","s_","]"}]," ",":="," ",RowBox[
+{"If","[",RowBox[{RowBox[{"0.05"," ","\[LessEqual]"," ","s"," ","\[LessEqual]"," ","0.4"}],","," ","18.0",","," ","0.0"}],"]"}]}],";"}],RowBox[
+{"\n","\n"}],RowBox[{RowBox[{RowBox[{"makePlot","[","tauVal_","]"}]," ",":="," ",RowBox[
+{"Module","[",RowBox[{RowBox[{"{",RowBox[{RowBox[{"sc"," ","="," ","0"}],","," ","solT"}],"}"}],",","\n","  ",RowBox[
+{RowBox[{"solT"," ","="," ",RowBox[{"NDSolve","[","\n","    ",RowBox[{RowBox[{"{","\n","      ",RowBox[
+{RowBox[{RowBox[{"tauVal"," ","*"," ",RowBox[{RowBox[{"V","'"}],"[","s","]"}]}]," ","=="," ",RowBox[
+{RowBox[{"-",RowBox[{"(",RowBox[{RowBox[{"V","[","s","]"}]," ","-"," ","Vrest"}],")"}]}]," ","+"," ",RowBox[
+{"R"," ","*"," ",RowBox[{"Iinput","[","s","]"}]}]}]}],",","\n","      ",RowBox[{RowBox[
+{"V","[","0","]"}]," ","=="," ","Vrest"}],",","\n","      ",RowBox[{"WhenEvent","[",RowBox[
+{RowBox[{RowBox[{"V","[","s","]"}]," ","\[GreaterEqual]"," ","Vthresh"}],",","\n","        ",RowBox[
+{"{",RowBox[{RowBox[{RowBox[{"V","[","s","]"}]," ","\[Rule]"," ","Vreset"}],","," ",RowBox[
+{"sc"," ","="," ",RowBox[{"sc"," ","+"," ","1"}]}]}],"}"}]}],"\n","      ","]"}]}],"\n","    ","}"}],",","\n","    ","V",","," ",RowBox[
+{"{",RowBox[{"s",","," ","0",","," ","0.5"}],"}"}],",","\n","    ",RowBox[{"DiscreteVariables"," ","\[Rule]"," ",RowBox[
+{"{","sc","}"}]}]}],"\n","  ","]"}]}],";","\n","  ",RowBox[{"Plot","[","\n","    ",RowBox[
+{RowBox[{"Evaluate","[",RowBox[{RowBox[{"V","[","s","]"}]," ","/."," ","solT"}],"]"}],",","\n","    ",RowBox[
+{"{",RowBox[{"s",","," ","0",","," ","0.5"}],"}"}],",","\n","    ",RowBox[{"PlotRange"," ","\[Rule]"," ",RowBox[
+{"{",RowBox[{RowBox[{"-","82"}],","," ",RowBox[{"-","48"}]}],"}"}]}],",","\n","    ",RowBox[
+{"PlotStyle"," ","\[Rule]"," ",RowBox[{"{","Thick","}"}]}],",","\n","    ",RowBox[
+{"PlotLabel"," ","\[Rule]"," ",RowBox[{"StringForm","[",RowBox[{"\"tau = `` s  |  Spikes: ``\"",","," ","tauVal",","," ","sc"}],"]"}]}],",","\n","    ",RowBox[
+{"AxesLabel"," ","\[Rule]"," ",RowBox[{"{",RowBox[{"\"Time (s)\"",","," ","\"V (mV)\""}],"}"}]}],",","\n","    ",RowBox[
+{"Epilog"," ","\[Rule]"," ",RowBox[{"{",RowBox[{"Red",","," ","Dashed",",","\n","               ",RowBox[
+{"InfiniteLine","[",RowBox[{"{",RowBox[{RowBox[{"{",RowBox[{"0",","," ","Vthresh"}],"}"}],","," ",RowBox[
+{"{",RowBox[{"1",","," ","Vthresh"}],"}"}]}],"}"}],"]"}]}],"}"}]}],",","\n","    ",RowBox[
+{"Frame"," ","\[Rule]"," ","True"}],",","\n","    ",RowBox[{"ImageSize"," ","\[Rule]"," ","280"}]}],"\n","  ","]"}]}]}],"\n","]"}]}],";"}],RowBox[
+{"\n","\n"}],RowBox[{"GraphicsRow","[",RowBox[{"{",RowBox[{RowBox[{"makePlot","[","tau1","]"}],","," ",RowBox[
+{"makePlot","[","tau2","]"}],","," ",RowBox[{"makePlot","[","tau3","]"}]}],"}"}],"]"}]}],
+"Input",CellLabel -> "In[90]:= ",ExpressionUUID -> "19437a0f-3796-4a0e-9603-55cb7a4998fe"],Cell[
+BoxData[
+TemplateBox[{"NDSolve","ivar","\"\\!\\(\\*TagBox[\\\"0\\\", Short[#1, 5] & ]\\) is not a valid variable.\"",2,95,67,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "6a3aa15e-d350-4faf-8f23-12d626992f2f"],Cell[
+BoxData[
+TemplateBox[{"ReplaceAll","reps","\"\\!\\(\\*TagBox[RowBox[{\\\"{\\\", RowBox[{\\\"NDSolve\\\", \\\"[\\\", RowBox[{RowBox[{\\\"{\\\", RowBox[{RowBox[{RowBox[{\\\"0.01`\\\", \\\" \\\", RowBox[{SuperscriptBox[\\\"V\\\", \\\"\[Prime]\\\", MultilineFunction -> None], \\\"[\\\", \\\"s\\\", \\\"]\\\"}]}], \\\"\[Equal]\\\", RowBox[{RowBox[{\\\"-\\\", \\\"70.`\\\"}], \\\"+\\\", RowBox[{\\\"1.`\\\", \\\" \\\", RowBox[{\\\"If\\\", \\\"[\\\", RowBox[{RowBox[{\\\"LessEqual\\\", \\\"[\\\", RowBox[{\\\"\[LeftSkeleton]\\\", \\\"3\\\", \\\"\[RightSkeleton]\\\"}], \\\"]\\\"}], \\\",\\\", \\\"18.`\\\", \\\",\\\", \\\"0.`\\\"}], \\\"]\\\"}]}], \\\"-\\\", RowBox[{\\\"V\\\", \\\"[\\\", \\\"s\\\", \\\"]\\\"}]}]}], \\\",\\\", RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"0\\\", \\\"]\\\"}], \\\"\[Equal]\\\", RowBox[{\\\"-\\\", \\\"70.`\\\"}]}], \\\",\\\", RowBox[{\\\"WhenEvent\\\", \\\"[\\\", RowBox[{RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"s\\\", \\\"]\\\"}], \\\"\[GreaterEqual]\\\", \\\"Vthresh\\\"}], \\\",\\\", RowBox[{\\\"{\\\", RowBox[{RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"s\\\", \\\"]\\\"}], \\\"\[Rule]\\\", \\\"Vreset\\\"}], \\\",\\\", RowBox[{\\\"sc$93862\\\", \\\"=\\\", RowBox[{\\\"sc$93862\\\", \\\"+\\\", \\\"1\\\"}]}]}], \\\"}\\\"}]}], \\\"]\\\"}]}], \\\"}\\\"}], \\\",\\\", \\\"V\\\", \\\",\\\", RowBox[{\\\"{\\\", RowBox[{\\\"s\\\", \\\",\\\", \\\"0\\\", \\\",\\\", \\\"0.5`\\\"}], \\\"}\\\"}], \\\",\\\", RowBox[{\\\"DiscreteVariables\\\", \\\"\[Rule]\\\", RowBox[{\\\"{\\\", \\\"0\\\", \\\"}\\\"}]}]}], \\\"]\\\"}], \\\"}\\\"}], Short[#1, 5] & ]\\) is neither a list of replacement rules nor a valid dispatch table, and so cannot be used for replacing.\"",2,95,68,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "2244342c-1d56-4c03-ac36-88bee4961505"],Cell[
+BoxData[
+TemplateBox[{"NDSolve","dsvar","\"\\!\\(\\*TagBox[\\\"0.000010214285714285712`\\\", Short[#1, 5] & ]\\) cannot be used as a variable.\"",2,95,69,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "d57e74e1-3773-4bef-8fa4-02e4ef7cac3c"],Cell[
+BoxData[
+TemplateBox[{"ReplaceAll","reps","\"\\!\\(\\*TagBox[RowBox[{\\\"{\\\", RowBox[{\\\"NDSolve\\\", \\\"[\\\", RowBox[{RowBox[{\\\"{\\\", RowBox[{RowBox[{RowBox[{\\\"0.01`\\\", \\\" \\\", RowBox[{SuperscriptBox[\\\"V\\\", \\\"\[Prime]\\\", MultilineFunction -> None], \\\"[\\\", \\\"0.000010214285714285712`\\\", \\\"]\\\"}]}], \\\"\[Equal]\\\", RowBox[{RowBox[{\\\"-\\\", \\\"70.`\\\"}], \\\"-\\\", RowBox[{\\\"V\\\", \\\"[\\\", \\\"0.000010214285714285712`\\\", \\\"]\\\"}]}]}], \\\",\\\", RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"0\\\", \\\"]\\\"}], \\\"\[Equal]\\\", RowBox[{\\\"-\\\", \\\"70.`\\\"}]}], \\\",\\\", RowBox[{\\\"WhenEvent\\\", \\\"[\\\", RowBox[{RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"s\\\", \\\"]\\\"}], \\\"\[GreaterEqual]\\\", RowBox[{\\\"-\\\", \\\"55.`\\\"}]}], \\\",\\\", RowBox[{\\\"{\\\", RowBox[{RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"s\\\", \\\"]\\\"}], \\\"\[Rule]\\\", RowBox[{\\\"-\\\", \\\"75.`\\\"}]}], \\\",\\\", RowBox[{\\\"sc$93862\\\", \\\"=\\\", RowBox[{\\\"sc$93862\\\", \\\"+\\\", \\\"1\\\"}]}]}], \\\"}\\\"}]}], \\\"]\\\"}]}], \\\"}\\\"}], \\\",\\\", \\\"V\\\", \\\",\\\", RowBox[{\\\"{\\\", RowBox[{\\\"0.000010214285714285712`\\\", \\\",\\\", \\\"0\\\", \\\",\\\", \\\"0.5`\\\"}], \\\"}\\\"}], \\\",\\\", RowBox[{\\\"DiscreteVariables\\\", \\\"\[Rule]\\\", RowBox[{\\\"{\\\", \\\"0\\\", \\\"}\\\"}]}]}], \\\"]\\\"}], \\\"}\\\"}], Short[#1, 5] & ]\\) is neither a list of replacement rules nor a valid dispatch table, and so cannot be used for replacing.\"",2,95,70,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "acc9f3ee-3f08-440c-8689-7a747da52c1a"],Cell[
+BoxData[
+TemplateBox[{"NDSolve","dsvar","\"\\!\\(\\*TagBox[\\\"0.000010214285714285712`\\\", Short[#1, 5] & ]\\) cannot be used as a variable.\"",2,95,71,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "7f2ea6e5-553b-4877-abd4-89838a689f80"],Cell[
+BoxData[
+TemplateBox[{"ReplaceAll","reps","\"\\!\\(\\*TagBox[RowBox[{\\\"{\\\", RowBox[{\\\"NDSolve\\\", \\\"[\\\", RowBox[{RowBox[{\\\"{\\\", RowBox[{RowBox[{RowBox[{\\\"0.01`\\\", \\\" \\\", RowBox[{SuperscriptBox[\\\"V\\\", \\\"\[Prime]\\\", MultilineFunction -> None], \\\"[\\\", \\\"0.000010214285714285712`\\\", \\\"]\\\"}]}], \\\"\[Equal]\\\", RowBox[{RowBox[{\\\"-\\\", \\\"70.`\\\"}], \\\"-\\\", RowBox[{\\\"1.`\\\", \\\" \\\", RowBox[{\\\"V\\\", \\\"[\\\", \\\"0.000010214285714285712`\\\", \\\"]\\\"}]}]}]}], \\\",\\\", RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"0.`\\\", \\\"]\\\"}], \\\"\[Equal]\\\", RowBox[{\\\"-\\\", \\\"70.`\\\"}]}], \\\",\\\", RowBox[{\\\"WhenEvent\\\", \\\"[\\\", RowBox[{RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"s\\\", \\\"]\\\"}], \\\"\[GreaterEqual]\\\", RowBox[{\\\"-\\\", \\\"55.`\\\"}]}], \\\",\\\", RowBox[{\\\"{\\\", RowBox[{RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"s\\\", \\\"]\\\"}], \\\"\[Rule]\\\", RowBox[{\\\"-\\\", \\\"75.`\\\"}]}], \\\",\\\", RowBox[{\\\"sc$93862\\\", \\\"=\\\", RowBox[{\\\"sc$93862\\\", \\\"+\\\", \\\"1.`\\\"}]}]}], \\\"}\\\"}]}], \\\"]\\\"}]}], \\\"}\\\"}], \\\",\\\", \\\"V\\\", \\\",\\\", RowBox[{\\\"{\\\", RowBox[{\\\"0.000010214285714285712`\\\", \\\",\\\", \\\"0.`\\\", \\\",\\\", \\\"0.5`\\\"}], \\\"}\\\"}], \\\",\\\", RowBox[{\\\"DiscreteVariables\\\", \\\"\[Rule]\\\", RowBox[{\\\"{\\\", \\\"0.`\\\", \\\"}\\\"}]}]}], \\\"]\\\"}], \\\"}\\\"}], Short[#1, 5] & ]\\) is neither a list of replacement rules nor a valid dispatch table, and so cannot be used for replacing.\"",2,95,72,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "a5a4e032-2b40-4aa7-b131-e929e96d766d"],Cell[
+BoxData[
+TemplateBox[{"General","stop","\"Further output of \\!\\(\\*TagBox[StyleBox[RowBox[{\\\"ReplaceAll\\\", \\\"::\\\", \\\"reps\\\"}], \\\"MessageName\\\"], Short[#1, 5] & ]\\) will be suppressed during this calculation.\"",2,95,73,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "9fb58398-fece-4ed0-8347-00842d5c0bf6"],Cell[
+BoxData[
+TemplateBox[{"NDSolve","dsvar","\"\\!\\(\\*TagBox[\\\"0.010214295918367346`\\\", Short[#1, 5] & ]\\) cannot be used as a variable.\"",2,95,74,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "dd151fb4-3781-48a1-bcf5-3ee23c5ba1f5"],Cell[
+BoxData[
+TemplateBox[{"General","stop","\"Further output of \\!\\(\\*TagBox[StyleBox[RowBox[{\\\"NDSolve\\\", \\\"::\\\", \\\"dsvar\\\"}], \\\"MessageName\\\"], Short[#1, 5] & ]\\) will be suppressed during this calculation.\"",2,95,75,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "a6157e4f-8878-40a5-8502-7172610cedf7"],Cell[
+BoxData[
+TemplateBox[{"NDSolve","ivar","\"\\!\\(\\*TagBox[\\\"0\\\", Short[#1, 5] & ]\\) is not a valid variable.\"",2,95,76,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "66998428-7a1a-47cb-9cc1-af79b745e63a"],Cell[
+BoxData[
+TemplateBox[{"NDSolve","ivar","\"\\!\\(\\*TagBox[\\\"0\\\", Short[#1, 5] & ]\\) is not a valid variable.\"",2,95,77,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "f2da6d26-5b78-4c02-a17b-1b87087bfac1"],Cell[
+BoxData[
+TemplateBox[{"General","stop","\"Further output of \\!\\(\\*TagBox[StyleBox[RowBox[{\\\"NDSolve\\\", \\\"::\\\", \\\"ivar\\\"}], \\\"MessageName\\\"], Short[#1, 5] & ]\\) will be suppressed during this calculation.\"",2,95,78,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "5f87923e-61c1-4e63-8e30-8bc211a12ade"],Cell[
+BoxData[
+GraphicsBox[{{},{{InsetBox[GraphicsBox[{{{},{}}},{DisplayFunction -> Identity,ImagePadding -> {{21.548828125`,2.6296635841836746`},{14.34375`,17.34375`}},RuleDelayed[
+PlotInteractivity,True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},DisplayFunction -> Identity,RuleDelayed[
+PlotInteractivity,True],DisplayFunction -> Identity,Ticks -> {Automatic,Automatic},AxesOrigin -> {0,-48.00000000000011`},FrameTicks -> {{Automatic,Automatic},{Automatic,Automatic}},GridLines -> {None,None},RuleDelayed[
+PlotInteractivity,True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},DisplayFunction -> Identity,PlotRangePadding -> {{Scaled[
+0.02`],Scaled[0.02`]},{0,0}},PlotRangeClipping -> True,ImagePadding -> All,RuleDelayed[
+PlotInteractivity,True],DisplayFunction -> Identity,RuleDelayed[PlotInteractivity,
+True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},AspectRatio -> NCache[Power[
+GoldenRatio,-1],0.6180339887498948`],Axes -> {True,True},AxesLabel -> {FormBox[TagBox[
+"\"Time (s)\"",HoldForm],TraditionalForm],FormBox[TagBox["\"V (mV)\"",HoldForm],TraditionalForm]},AxesOrigin -> {0,-82.`},RuleDelayed[
+DisplayFunction,Identity],Epilog -> {RGBColor[1,0,0],Dashing[{Small,Small}],TagBox[
+ConicHullRegionBox[{{0,-55.`},{1,-55.`}}],"InfiniteLine"]},Frame -> {{True,True},{True,True}},FrameLabel -> {{None,None},{None,None}},FrameTicks -> {{Automatic,Automatic},{Automatic,Automatic}},GridLines -> {None,None},GridLinesStyle -> Directive[
+GrayLevel[0.5`,0.4`]],ImageSize -> 280,Method -> {"DefaultBoundaryStyle" -> Automatic,"DefaultGraphicsInteraction" -> {"Version" -> 1.2`,"TrackMousePosition" -> {True,False},"Effects" -> {"Highlight" -> {"ratio" -> 2},"HighlightPoint" -> {"ratio" -> 2},"Droplines" -> {"freeformCursorMode" -> True,"placement" -> {"x" -> "All","y" -> "None"}}}},"DefaultMeshStyle" -> AbsolutePointSize[
+6],"ScalingFunctions" -> None,"CoordinatesToolOptions" -> {"DisplayFunction" -> Function[
+{Function[Identity[Slot[1]]][Part[Slot[1],1]],Function[Identity[Slot[1]]][Part[Slot[
+1],2]]}],"CopiedValueFunction" -> Function[{Function[Identity[Slot[1]]][Part[Slot[
+1],1]],Function[Identity[Slot[1]]][Part[Slot[1],2]]}]}},PlotLabel -> FormBox[InterpretationBox[
+"\"tau = \\!\\(\\*FormBox[\\\"0.01`\\\", TraditionalForm]\\) s  |  Spikes: \\!\\(\\*FormBox[\\\"0\\\", TraditionalForm]\\)\"",
+StringForm["tau = `` s  |  Spikes: ``",0.01`,0],Editable -> False],TraditionalForm],PlotRange -> {{0.`,0.`},{-82.`,-48.`}},PlotRangeClipping -> True,PlotRangePadding -> {{Scaled[
+0.02`],Scaled[0.02`]},{Automatic,Automatic}},Ticks -> {Automatic,Automatic}}],{107.5`,-84.66581841349795`},
+ImageScaled[{0.5`,0.5`}],{200.`,154.3316368269959`},BaseStyle -> {Graphics3DBoxOptions -> {SphericalRegion -> False}}],InsetBox[
+GraphicsBox[{{{},{}}},{DisplayFunction -> Identity,ImagePadding -> {{21.548828125`,2.6296635841836746`},{14.34375`,17.34375`}},RuleDelayed[
+PlotInteractivity,True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},DisplayFunction -> Identity,RuleDelayed[
+PlotInteractivity,True],DisplayFunction -> Identity,Ticks -> {Automatic,Automatic},AxesOrigin -> {0,-48.00000000000011`},FrameTicks -> {{Automatic,Automatic},{Automatic,Automatic}},GridLines -> {None,None},RuleDelayed[
+PlotInteractivity,True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},DisplayFunction -> Identity,PlotRangePadding -> {{Scaled[
+0.02`],Scaled[0.02`]},{0,0}},PlotRangeClipping -> True,ImagePadding -> All,RuleDelayed[
+PlotInteractivity,True],DisplayFunction -> Identity,RuleDelayed[PlotInteractivity,
+True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},AspectRatio -> NCache[Power[
+GoldenRatio,-1],0.6180339887498948`],Axes -> {True,True},AxesLabel -> {FormBox[TagBox[
+"\"Time (s)\"",HoldForm],TraditionalForm],FormBox[TagBox["\"V (mV)\"",HoldForm],TraditionalForm]},AxesOrigin -> {0,-82.`},RuleDelayed[
+DisplayFunction,Identity],Epilog -> {RGBColor[1,0,0],Dashing[{Small,Small}],TagBox[
+ConicHullRegionBox[{{0,-55.`},{1,-55.`}}],"InfiniteLine"]},Frame -> {{True,True},{True,True}},FrameLabel -> {{None,None},{None,None}},FrameTicks -> {{Automatic,Automatic},{Automatic,Automatic}},GridLines -> {None,None},GridLinesStyle -> Directive[
+GrayLevel[0.5`,0.4`]],ImageSize -> 280,Method -> {"DefaultBoundaryStyle" -> Automatic,"DefaultGraphicsInteraction" -> {"Version" -> 1.2`,"TrackMousePosition" -> {True,False},"Effects" -> {"Highlight" -> {"ratio" -> 2},"HighlightPoint" -> {"ratio" -> 2},"Droplines" -> {"freeformCursorMode" -> True,"placement" -> {"x" -> "All","y" -> "None"}}}},"DefaultMeshStyle" -> AbsolutePointSize[
+6],"ScalingFunctions" -> None,"CoordinatesToolOptions" -> {"DisplayFunction" -> Function[
+{Function[Identity[Slot[1]]][Part[Slot[1],1]],Function[Identity[Slot[1]]][Part[Slot[
+1],2]]}],"CopiedValueFunction" -> Function[{Function[Identity[Slot[1]]][Part[Slot[
+1],1]],Function[Identity[Slot[1]]][Part[Slot[1],2]]}]}},PlotLabel -> FormBox[InterpretationBox[
+"\"tau = \\!\\(\\*FormBox[\\\"0.02`\\\", TraditionalForm]\\) s  |  Spikes: \\!\\(\\*FormBox[\\\"0\\\", TraditionalForm]\\)\"",
+StringForm["tau = `` s  |  Spikes: ``",0.02`,0],Editable -> False],TraditionalForm],PlotRange -> {{0.`,0.`},{-82.`,-48.`}},PlotRangeClipping -> True,PlotRangePadding -> {{Scaled[
+0.02`],Scaled[0.02`]},{Automatic,Automatic}},Ticks -> {Automatic,Automatic}}],{322.5`,-84.66581841349795`},
+ImageScaled[{0.5`,0.5`}],{200.`,154.3316368269959`},BaseStyle -> {Graphics3DBoxOptions -> {SphericalRegion -> False}}],InsetBox[
+GraphicsBox[{{{},{}}},{DisplayFunction -> Identity,ImagePadding -> {{21.548828125`,2.6296635841836746`},{14.34375`,17.34375`}},RuleDelayed[
+PlotInteractivity,True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},DisplayFunction -> Identity,RuleDelayed[
+PlotInteractivity,True],DisplayFunction -> Identity,Ticks -> {Automatic,Automatic},AxesOrigin -> {0,-48.00000000000011`},FrameTicks -> {{Automatic,Automatic},{Automatic,Automatic}},GridLines -> {None,None},RuleDelayed[
+PlotInteractivity,True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},DisplayFunction -> Identity,PlotRangePadding -> {{Scaled[
+0.02`],Scaled[0.02`]},{0,0}},PlotRangeClipping -> True,ImagePadding -> All,RuleDelayed[
+PlotInteractivity,True],DisplayFunction -> Identity,RuleDelayed[PlotInteractivity,
+True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},AspectRatio -> NCache[Power[
+GoldenRatio,-1],0.6180339887498948`],Axes -> {True,True},AxesLabel -> {FormBox[TagBox[
+"\"Time (s)\"",HoldForm],TraditionalForm],FormBox[TagBox["\"V (mV)\"",HoldForm],TraditionalForm]},AxesOrigin -> {0,-82.`},RuleDelayed[
+DisplayFunction,Identity],Epilog -> {RGBColor[1,0,0],Dashing[{Small,Small}],TagBox[
+ConicHullRegionBox[{{0,-55.`},{1,-55.`}}],"InfiniteLine"]},Frame -> {{True,True},{True,True}},FrameLabel -> {{None,None},{None,None}},FrameTicks -> {{Automatic,Automatic},{Automatic,Automatic}},GridLines -> {None,None},GridLinesStyle -> Directive[
+GrayLevel[0.5`,0.4`]],ImageSize -> 280,Method -> {"DefaultBoundaryStyle" -> Automatic,"DefaultGraphicsInteraction" -> {"Version" -> 1.2`,"TrackMousePosition" -> {True,False},"Effects" -> {"Highlight" -> {"ratio" -> 2},"HighlightPoint" -> {"ratio" -> 2},"Droplines" -> {"freeformCursorMode" -> True,"placement" -> {"x" -> "All","y" -> "None"}}}},"DefaultMeshStyle" -> AbsolutePointSize[
+6],"ScalingFunctions" -> None,"CoordinatesToolOptions" -> {"DisplayFunction" -> Function[
+{Function[Identity[Slot[1]]][Part[Slot[1],1]],Function[Identity[Slot[1]]][Part[Slot[
+1],2]]}],"CopiedValueFunction" -> Function[{Function[Identity[Slot[1]]][Part[Slot[
+1],1]],Function[Identity[Slot[1]]][Part[Slot[1],2]]}]}},PlotLabel -> FormBox[InterpretationBox[
+"\"tau = \\!\\(\\*FormBox[\\\"0.05`\\\", TraditionalForm]\\) s  |  Spikes: \\!\\(\\*FormBox[\\\"0\\\", TraditionalForm]\\)\"",
+StringForm["tau = `` s  |  Spikes: ``",0.05`,0],Editable -> False],TraditionalForm],PlotRange -> {{0.`,0.`},{-82.`,-48.`}},PlotRangeClipping -> True,PlotRangePadding -> {{Scaled[
+0.02`],Scaled[0.02`]},{Automatic,Automatic}},Ticks -> {Automatic,Automatic}}],{537.5`,-84.66581841349795`},
+ImageScaled[{0.5`,0.5`}],{200.`,154.3316368269959`},BaseStyle -> {Graphics3DBoxOptions -> {SphericalRegion -> False}}]}},{}},
+{PlotRangePadding -> Automatic,PlotRange -> {{0,645.`},{-169.3316368269959`,0}},ImageSize -> {645.`,169.3316368269959`}},
+Method -> {"IgnoreImageSizeAutomaticLimit" -> True},ExpressionUUID -> "da040823-dfde-4240-9d48-d6d71c6806fd"],
+StandardForm],"Output",CellLabel -> "Out[95]= ",ExpressionUUID -> "606fa77e-862a-4d45-96b1-c263a66b6555"],Cell[
+TextData[
+{"Experiment"," ","2"," ","Observations"," ","\n","\n","What"," ","I"," ","changed",StyleBox[
+RowBox[{":"," "}]],"Membrane"," ","time"," ","constant"," ","tau"," ","across"," ","three"," ","values",StyleBox[
+RowBox[{":"," "}]],"0",".","010"," ","s",StyleBox[RowBox[{","," "}]],"0",".","020"," ","s",StyleBox[
+RowBox[{","," "}]],"and"," ","0",".","050"," ","s",StyleBox[RowBox[{"."," "}]],"All"," ","other"," ","parameters"," ","stayed"," ","fixed",StyleBox[
+RowBox[{" ","("}]],"I",StyleBox[RowBox[{" ","="," "}]],"18"," ","nA",StyleBox[RowBox[
+{","," "}]],"Vthresh",StyleBox[RowBox[{" ","="," ","-"}]],"55"," ","mV",").","\n","\n","What"," ","I"," ","expected",StyleBox[
+RowBox[{":"," "}]],"Larger"," ","tau"," ","should"," ","slow"," ","down"," ","charging"," ","and"," ","reduce"," ","spike"," ","count",".","\n","\n","What"," ","actually"," ","happened",":","\n","\n","tau",StyleBox[
+RowBox[{" ","="," "}]],"0",".","010",StyleBox[RowBox[{" ","\[LongDash]"," "}]],"fastest"," ","charging",StyleBox[
+RowBox[{","," "}]],"sharpest"," ","sawtooth",StyleBox[RowBox[{","," "}]],"highest"," ","spike"," ","count","\n","tau",StyleBox[
+RowBox[{" ","="," "}]],"0",".","020",StyleBox[RowBox[{" ","\[LongDash]"," "}]],"moderate"," ","firing"," ","rate",StyleBox[
+RowBox[{","," "}]],"smooth"," ","exponential"," ","rise","\n","tau",StyleBox[RowBox[
+{" ","="," "}]],"0",".","050",StyleBox[RowBox[{" ","\[LongDash]"," "}]],"slowest"," ","charging",StyleBox[
+RowBox[{","," "}]],"fewest"," ","spikes",StyleBox[RowBox[{","," "}]],"very"," ","rounded"," ","gradual"," ","rise"," ","between"," ","spikes","\n","\n","Why"," ","this"," ","makes"," ","sense",StyleBox[
+RowBox[{":"," "}]],"The"," ","LIF"," ","equation"," ","solution"," ","is"," ","an"," ","exponential"," ","with"," ","time"," ","constant"," ","tau",StyleBox[
+RowBox[{"."," "}]],"Larger"," ","tau"," ","means"," ","slower"," ","approach"," ","to"," ","the"," ","steady","-","state"," ","voltage",StyleBox[
+RowBox[{","," "}]],"so"," ","the"," ","neuron"," ","takes"," ","longer"," ","to"," ","reach"," ","threshold"," ","each"," ","time",StyleBox[
+RowBox[{"."," "}]],"Biologically",StyleBox[RowBox[{","," "}]],"neurons"," ","with"," ","short"," ","time"," ","constants",StyleBox[
+RowBox[{" ","("}]],"like"," ","auditory"," ","brainstem"," ","neurons",StyleBox[RowBox[
+{")"," "}]],"are"," ","built"," ","for"," ","speed"," ","and"," ","precise"," ","timing",StyleBox[
+RowBox[{","," "}]],"while"," ","neurons"," ","with"," ","long"," ","time"," ","constants",StyleBox[
+RowBox[{" ","("}]],"like"," ","some"," ","prefrontal"," ","cortex"," ","neurons",StyleBox[
+RowBox[{")"," "}]],"integrate"," ","input"," ","slowly"," ","and"," ","are"," ","better"," ","suited"," ","for"," ","holding"," ","information"," ","over"," ","time","."}],
+"Text",ExpressionUUID -> "8c59aaae-2a78-4e41-ab25-2b36d08722ed"],Cell[
+BoxData[{RowBox[
+{"Remove","[","\"Global`*\"","]"}],RowBox[{"\n","\n"}],RowBox[{RowBox[{"tau"," ","="," ","0.020"}],";"," ",RowBox[
+{"Vrest"," ","="," ",RowBox[{"-","70.0"}]}],";"," ",RowBox[{"Vthresh"," ","="," ",RowBox[
+{"-","55.0"}]}],";"," ",RowBox[{"Vreset"," ","="," ",RowBox[{"-","75.0"}]}],";"," ",RowBox[
+{"R"," ","="," ","1.0"}],";"}],RowBox[{"\n","\n"}],RowBox[{RowBox[{RowBox[{"makeNoisyPlot","[","runNum_","]"}]," ",":="," ",RowBox[
+{"Module","[",RowBox[{RowBox[{"{",RowBox[{RowBox[{"sc"," ","="," ","0"}],","," ","solN"}],"}"}],",","\n","  ",RowBox[
+{RowBox[{"solN"," ","="," ",RowBox[{"NDSolve","[","\n","    ",RowBox[{RowBox[{"{","\n","      ",RowBox[
+{RowBox[{RowBox[{"tau"," ","*"," ",RowBox[{RowBox[{"V","'"}],"[","s","]"}]}]," ","=="," ",RowBox[
+{RowBox[{"-",RowBox[{"(",RowBox[{RowBox[{"V","[","s","]"}]," ","-"," ","Vrest"}],")"}]}]," ","+"," ",RowBox[
+{"R"," ","*"," ",RowBox[{"(",RowBox[{"18.0"," ","+"," ",RowBox[{"RandomReal","[",RowBox[
+{"{",RowBox[{RowBox[{"-","8"}],","," ","8"}],"}"}],"]"}]}],")"}]}]}]}],",","\n","      ",RowBox[
+{RowBox[{"V","[","0","]"}]," ","=="," ","Vrest"}],",","\n","      ",RowBox[{"WhenEvent","[",RowBox[
+{RowBox[{RowBox[{"V","[","s","]"}]," ","\[GreaterEqual]"," ","Vthresh"}],",","\n","        ",RowBox[
+{"{",RowBox[{RowBox[{RowBox[{"V","[","s","]"}]," ","\[Rule]"," ","Vreset"}],","," ",RowBox[
+{"sc"," ","="," ",RowBox[{"sc"," ","+"," ","1"}]}]}],"}"}]}],"\n","      ","]"}]}],"\n","    ","}"}],",","\n","    ","V",","," ",RowBox[
+{"{",RowBox[{"s",","," ","0",","," ","0.5"}],"}"}],",","\n","    ",RowBox[{"DiscreteVariables"," ","\[Rule]"," ",RowBox[
+{"{","sc","}"}]}]}],"\n","  ","]"}]}],";","\n","  ",RowBox[{"Plot","[","\n","    ",RowBox[
+{RowBox[{"Evaluate","[",RowBox[{RowBox[{"V","[","s","]"}]," ","/."," ","solN"}],"]"}],",","\n","    ",RowBox[
+{"{",RowBox[{"s",","," ","0",","," ","0.5"}],"}"}],",","\n","    ",RowBox[{"PlotRange"," ","\[Rule]"," ",RowBox[
+{"{",RowBox[{RowBox[{"-","82"}],","," ",RowBox[{"-","48"}]}],"}"}]}],",","\n","    ",RowBox[
+{"PlotStyle"," ","\[Rule]"," ",RowBox[{"{",RowBox[{RowBox[{"Hue","[",RowBox[{"runNum","/","4"}],"]"}],","," ","Thick"}],"}"}]}],",","\n","    ",RowBox[
+{"PlotLabel"," ","\[Rule]"," ",RowBox[{"StringForm","[",RowBox[{"\"Run ``  |  Spikes: ``\"",","," ","runNum",","," ","sc"}],"]"}]}],",","\n","    ",RowBox[
+{"AxesLabel"," ","\[Rule]"," ",RowBox[{"{",RowBox[{"\"Time (s)\"",","," ","\"V (mV)\""}],"}"}]}],",","\n","    ",RowBox[
+{"Epilog"," ","\[Rule]"," ",RowBox[{"{",RowBox[{"Red",","," ","Dashed",",","\n","               ",RowBox[
+{"InfiniteLine","[",RowBox[{"{",RowBox[{RowBox[{"{",RowBox[{"0",","," ","Vthresh"}],"}"}],","," ",RowBox[
+{"{",RowBox[{"1",","," ","Vthresh"}],"}"}]}],"}"}],"]"}]}],"}"}]}],",","\n","    ",RowBox[
+{"Frame"," ","\[Rule]"," ","True"}],",","\n","    ",RowBox[{"ImageSize"," ","\[Rule]"," ","280"}]}],"\n","  ","]"}]}]}],"\n","]"}]}],";"}],RowBox[
+{"\n","\n"}],RowBox[{"GraphicsRow","[",RowBox[{"{",RowBox[{RowBox[{"makeNoisyPlot","[","1","]"}],","," ",RowBox[
+{"makeNoisyPlot","[","2","]"}],","," ",RowBox[{"makeNoisyPlot","[","3","]"}]}],"}"}],"]"}]}],
+"Input",CellLabel -> "In[106]:= ",ExpressionUUID -> "ddc171cb-a990-4c0c-b3a7-88e92fd5d743"],Cell[
+BoxData[
+TemplateBox[{"NDSolve","ivar","\"\\!\\(\\*TagBox[\\\"0\\\", Short[#1, 5] & ]\\) is not a valid variable.\"",2,109,115,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "4268e3ab-0067-4ff3-ad57-3f7b0cdf5a88"],Cell[
+BoxData[
+TemplateBox[{"ReplaceAll","reps","\"\\!\\(\\*TagBox[RowBox[{\\\"{\\\", RowBox[{\\\"NDSolve\\\", \\\"[\\\", RowBox[{RowBox[{\\\"{\\\", RowBox[{RowBox[{RowBox[{\\\"0.02`\\\", \\\" \\\", RowBox[{SuperscriptBox[\\\"V\\\", \\\"\[Prime]\\\", MultilineFunction -> None], \\\"[\\\", \\\"s\\\", \\\"]\\\"}]}], \\\"\[Equal]\\\", RowBox[{RowBox[{\\\"-\\\", \\\"54.890184506555144`\\\"}], \\\"-\\\", RowBox[{\\\"V\\\", \\\"[\\\", \\\"s\\\", \\\"]\\\"}]}]}], \\\",\\\", RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"0\\\", \\\"]\\\"}], \\\"\[Equal]\\\", RowBox[{\\\"-\\\", \\\"70.`\\\"}]}], \\\",\\\", RowBox[{\\\"WhenEvent\\\", \\\"[\\\", RowBox[{RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"s\\\", \\\"]\\\"}], \\\"\[GreaterEqual]\\\", \\\"Vthresh\\\"}], \\\",\\\", RowBox[{\\\"{\\\", RowBox[{RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"s\\\", \\\"]\\\"}], \\\"\[Rule]\\\", \\\"Vreset\\\"}], \\\",\\\", RowBox[{\\\"sc$100281\\\", \\\"=\\\", RowBox[{\\\"sc$100281\\\", \\\"+\\\", \\\"1\\\"}]}]}], \\\"}\\\"}]}], \\\"]\\\"}]}], \\\"}\\\"}], \\\",\\\", \\\"V\\\", \\\",\\\", RowBox[{\\\"{\\\", RowBox[{\\\"s\\\", \\\",\\\", \\\"0\\\", \\\",\\\", \\\"0.5`\\\"}], \\\"}\\\"}], \\\",\\\", RowBox[{\\\"DiscreteVariables\\\", \\\"\[Rule]\\\", RowBox[{\\\"{\\\", \\\"0\\\", \\\"}\\\"}]}]}], \\\"]\\\"}], \\\"}\\\"}], Short[#1, 5] & ]\\) is neither a list of replacement rules nor a valid dispatch table, and so cannot be used for replacing.\"",2,109,116,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "b610308d-2091-4c96-abe4-cc2a33e84f98"],Cell[
+BoxData[
+TemplateBox[{"NDSolve","dsvar","\"\\!\\(\\*TagBox[\\\"0.000010214285714285712`\\\", Short[#1, 5] & ]\\) cannot be used as a variable.\"",2,109,117,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "a188fd40-2892-4898-a496-cb4e63a9f964"],Cell[
+BoxData[
+TemplateBox[{"ReplaceAll","reps","\"\\!\\(\\*TagBox[RowBox[{\\\"{\\\", RowBox[{\\\"NDSolve\\\", \\\"[\\\", RowBox[{RowBox[{\\\"{\\\", RowBox[{RowBox[{RowBox[{\\\"0.02`\\\", \\\" \\\", RowBox[{SuperscriptBox[\\\"V\\\", \\\"\[Prime]\\\", MultilineFunction -> None], \\\"[\\\", \\\"0.000010214285714285712`\\\", \\\"]\\\"}]}], \\\"\[Equal]\\\", RowBox[{RowBox[{\\\"-\\\", \\\"54.890184506555144`\\\"}], \\\"-\\\", RowBox[{\\\"V\\\", \\\"[\\\", \\\"0.000010214285714285712`\\\", \\\"]\\\"}]}]}], \\\",\\\", RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"0\\\", \\\"]\\\"}], \\\"\[Equal]\\\", RowBox[{\\\"-\\\", \\\"70.`\\\"}]}], \\\",\\\", RowBox[{\\\"WhenEvent\\\", \\\"[\\\", RowBox[{RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"s\\\", \\\"]\\\"}], \\\"\[GreaterEqual]\\\", RowBox[{\\\"-\\\", \\\"55.`\\\"}]}], \\\",\\\", RowBox[{\\\"{\\\", RowBox[{RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"s\\\", \\\"]\\\"}], \\\"\[Rule]\\\", RowBox[{\\\"-\\\", \\\"75.`\\\"}]}], \\\",\\\", RowBox[{\\\"sc$100281\\\", \\\"=\\\", RowBox[{\\\"sc$100281\\\", \\\"+\\\", \\\"1\\\"}]}]}], \\\"}\\\"}]}], \\\"]\\\"}]}], \\\"}\\\"}], \\\",\\\", \\\"V\\\", \\\",\\\", RowBox[{\\\"{\\\", RowBox[{\\\"0.000010214285714285712`\\\", \\\",\\\", \\\"0\\\", \\\",\\\", \\\"0.5`\\\"}], \\\"}\\\"}], \\\",\\\", RowBox[{\\\"DiscreteVariables\\\", \\\"\[Rule]\\\", RowBox[{\\\"{\\\", \\\"0\\\", \\\"}\\\"}]}]}], \\\"]\\\"}], \\\"}\\\"}], Short[#1, 5] & ]\\) is neither a list of replacement rules nor a valid dispatch table, and so cannot be used for replacing.\"",2,109,118,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "90cdd692-8981-4827-873a-a31a97f583d1"],Cell[
+BoxData[
+TemplateBox[{"NDSolve","dsvar","\"\\!\\(\\*TagBox[\\\"0.000010214285714285712`\\\", Short[#1, 5] & ]\\) cannot be used as a variable.\"",2,109,119,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "8b7150e0-e343-41cb-a654-d22679a8e6c0"],Cell[
+BoxData[
+TemplateBox[{"ReplaceAll","reps","\"\\!\\(\\*TagBox[RowBox[{\\\"{\\\", RowBox[{\\\"NDSolve\\\", \\\"[\\\", RowBox[{RowBox[{\\\"{\\\", RowBox[{RowBox[{RowBox[{\\\"0.02`\\\", \\\" \\\", RowBox[{SuperscriptBox[\\\"V\\\", \\\"\[Prime]\\\", MultilineFunction -> None], \\\"[\\\", \\\"0.000010214285714285712`\\\", \\\"]\\\"}]}], \\\"\[Equal]\\\", RowBox[{RowBox[{\\\"-\\\", \\\"54.890184506555144`\\\"}], \\\"-\\\", RowBox[{\\\"1.`\\\", \\\" \\\", RowBox[{\\\"V\\\", \\\"[\\\", \\\"0.000010214285714285712`\\\", \\\"]\\\"}]}]}]}], \\\",\\\", RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"0.`\\\", \\\"]\\\"}], \\\"\[Equal]\\\", RowBox[{\\\"-\\\", \\\"70.`\\\"}]}], \\\",\\\", RowBox[{\\\"WhenEvent\\\", \\\"[\\\", RowBox[{RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"s\\\", \\\"]\\\"}], \\\"\[GreaterEqual]\\\", RowBox[{\\\"-\\\", \\\"55.`\\\"}]}], \\\",\\\", RowBox[{\\\"{\\\", RowBox[{RowBox[{RowBox[{\\\"V\\\", \\\"[\\\", \\\"s\\\", \\\"]\\\"}], \\\"\[Rule]\\\", RowBox[{\\\"-\\\", \\\"75.`\\\"}]}], \\\",\\\", RowBox[{\\\"sc$100281\\\", \\\"=\\\", RowBox[{\\\"sc$100281\\\", \\\"+\\\", \\\"1.`\\\"}]}]}], \\\"}\\\"}]}], \\\"]\\\"}]}], \\\"}\\\"}], \\\",\\\", \\\"V\\\", \\\",\\\", RowBox[{\\\"{\\\", RowBox[{\\\"0.000010214285714285712`\\\", \\\",\\\", \\\"0.`\\\", \\\",\\\", \\\"0.5`\\\"}], \\\"}\\\"}], \\\",\\\", RowBox[{\\\"DiscreteVariables\\\", \\\"\[Rule]\\\", RowBox[{\\\"{\\\", \\\"0.`\\\", \\\"}\\\"}]}]}], \\\"]\\\"}], \\\"}\\\"}], Short[#1, 5] & ]\\) is neither a list of replacement rules nor a valid dispatch table, and so cannot be used for replacing.\"",2,109,120,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "5b5ad025-6675-4394-b245-814b43c01897"],Cell[
+BoxData[
+TemplateBox[{"General","stop","\"Further output of \\!\\(\\*TagBox[StyleBox[RowBox[{\\\"ReplaceAll\\\", \\\"::\\\", \\\"reps\\\"}], \\\"MessageName\\\"], Short[#1, 5] & ]\\) will be suppressed during this calculation.\"",2,109,121,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "6873ccc7-6808-4777-905b-fdfbe318f91e"],Cell[
+BoxData[
+TemplateBox[{"NDSolve","dsvar","\"\\!\\(\\*TagBox[\\\"0.010214295918367346`\\\", Short[#1, 5] & ]\\) cannot be used as a variable.\"",2,109,122,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "aad65e42-358f-45fd-8cd3-987ba877f4ed"],Cell[
+BoxData[
+TemplateBox[{"General","stop","\"Further output of \\!\\(\\*TagBox[StyleBox[RowBox[{\\\"NDSolve\\\", \\\"::\\\", \\\"dsvar\\\"}], \\\"MessageName\\\"], Short[#1, 5] & ]\\) will be suppressed during this calculation.\"",2,109,123,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "f7405e5d-352a-4fa0-8ea0-f15ad332d84d"],Cell[
+BoxData[
+TemplateBox[{"NDSolve","ivar","\"\\!\\(\\*TagBox[\\\"0\\\", Short[#1, 5] & ]\\) is not a valid variable.\"",2,109,124,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "3c0dedbd-6ffb-4c65-ba55-0e8339740e27"],Cell[
+BoxData[
+TemplateBox[{"NDSolve","ivar","\"\\!\\(\\*TagBox[\\\"0\\\", Short[#1, 5] & ]\\) is not a valid variable.\"",2,109,125,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "82e1207e-660c-4447-8710-6d3bf14ee0aa"],Cell[
+BoxData[
+TemplateBox[{"General","stop","\"Further output of \\!\\(\\*TagBox[StyleBox[RowBox[{\\\"NDSolve\\\", \\\"::\\\", \\\"ivar\\\"}], \\\"MessageName\\\"], Short[#1, 5] & ]\\) will be suppressed during this calculation.\"",2,109,126,21355004064017286792,"Local"},
+"MessageTemplate",BaseStyle -> "MSG"],StandardForm],"MSG","Message",ExpressionUUID -> "a2c04b16-9c41-4018-96e5-f1fa7d24e64d"],Cell[
+BoxData[
+GraphicsBox[{{},{{InsetBox[GraphicsBox[{{{},{}}},{DisplayFunction -> Identity,ImagePadding -> {{21.548828125`,2.6296635841836746`},{14.34375`,17.34375`}},RuleDelayed[
+PlotInteractivity,True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},DisplayFunction -> Identity,RuleDelayed[
+PlotInteractivity,True],DisplayFunction -> Identity,Ticks -> {Automatic,Automatic},AxesOrigin -> {0,-48.00000000000011`},FrameTicks -> {{Automatic,Automatic},{Automatic,Automatic}},GridLines -> {None,None},RuleDelayed[
+PlotInteractivity,True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},DisplayFunction -> Identity,PlotRangePadding -> {{Scaled[
+0.02`],Scaled[0.02`]},{0,0}},PlotRangeClipping -> True,ImagePadding -> All,RuleDelayed[
+PlotInteractivity,True],DisplayFunction -> Identity,RuleDelayed[PlotInteractivity,
+True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},AspectRatio -> NCache[Power[
+GoldenRatio,-1],0.6180339887498948`],Axes -> {True,True},AxesLabel -> {FormBox[TagBox[
+"\"Time (s)\"",HoldForm],TraditionalForm],FormBox[TagBox["\"V (mV)\"",HoldForm],TraditionalForm]},AxesOrigin -> {0,-82.`},RuleDelayed[
+DisplayFunction,Identity],Epilog -> {RGBColor[1,0,0],Dashing[{Small,Small}],TagBox[
+ConicHullRegionBox[{{0,-55.`},{1,-55.`}}],"InfiniteLine"]},Frame -> {{True,True},{True,True}},FrameLabel -> {{None,None},{None,None}},FrameTicks -> {{Automatic,Automatic},{Automatic,Automatic}},GridLines -> {None,None},GridLinesStyle -> Directive[
+GrayLevel[0.5`,0.4`]],ImageSize -> 280,Method -> {"DefaultBoundaryStyle" -> Automatic,"DefaultGraphicsInteraction" -> {"Version" -> 1.2`,"TrackMousePosition" -> {True,False},"Effects" -> {"Highlight" -> {"ratio" -> 2},"HighlightPoint" -> {"ratio" -> 2},"Droplines" -> {"freeformCursorMode" -> True,"placement" -> {"x" -> "All","y" -> "None"}}}},"DefaultMeshStyle" -> AbsolutePointSize[
+6],"ScalingFunctions" -> None,"CoordinatesToolOptions" -> {"DisplayFunction" -> Function[
+{Function[Identity[Slot[1]]][Part[Slot[1],1]],Function[Identity[Slot[1]]][Part[Slot[
+1],2]]}],"CopiedValueFunction" -> Function[{Function[Identity[Slot[1]]][Part[Slot[
+1],1]],Function[Identity[Slot[1]]][Part[Slot[1],2]]}]}},PlotLabel -> FormBox[InterpretationBox[
+"\"Run \\!\\(\\*FormBox[\\\"1\\\", TraditionalForm]\\)  |  Spikes: \\!\\(\\*FormBox[\\\"0\\\", TraditionalForm]\\)\"",
+StringForm["Run ``  |  Spikes: ``",1,0],Editable -> False],TraditionalForm],PlotRange -> {{0.`,0.`},{-82.`,-48.`}},PlotRangeClipping -> True,PlotRangePadding -> {{Scaled[
+0.02`],Scaled[0.02`]},{Automatic,Automatic}},Ticks -> {Automatic,Automatic}}],{107.5`,-84.66581841349795`},
+ImageScaled[{0.5`,0.5`}],{200.`,154.3316368269959`},BaseStyle -> {Graphics3DBoxOptions -> {SphericalRegion -> False}}],InsetBox[
+GraphicsBox[{{{},{}}},{DisplayFunction -> Identity,ImagePadding -> {{21.548828125`,2.6296635841836746`},{14.34375`,17.34375`}},RuleDelayed[
+PlotInteractivity,True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},DisplayFunction -> Identity,RuleDelayed[
+PlotInteractivity,True],DisplayFunction -> Identity,Ticks -> {Automatic,Automatic},AxesOrigin -> {0,-48.00000000000011`},FrameTicks -> {{Automatic,Automatic},{Automatic,Automatic}},GridLines -> {None,None},RuleDelayed[
+PlotInteractivity,True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},DisplayFunction -> Identity,PlotRangePadding -> {{Scaled[
+0.02`],Scaled[0.02`]},{0,0}},PlotRangeClipping -> True,ImagePadding -> All,RuleDelayed[
+PlotInteractivity,True],DisplayFunction -> Identity,RuleDelayed[PlotInteractivity,
+True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},AspectRatio -> NCache[Power[
+GoldenRatio,-1],0.6180339887498948`],Axes -> {True,True},AxesLabel -> {FormBox[TagBox[
+"\"Time (s)\"",HoldForm],TraditionalForm],FormBox[TagBox["\"V (mV)\"",HoldForm],TraditionalForm]},AxesOrigin -> {0,-82.`},RuleDelayed[
+DisplayFunction,Identity],Epilog -> {RGBColor[1,0,0],Dashing[{Small,Small}],TagBox[
+ConicHullRegionBox[{{0,-55.`},{1,-55.`}}],"InfiniteLine"]},Frame -> {{True,True},{True,True}},FrameLabel -> {{None,None},{None,None}},FrameTicks -> {{Automatic,Automatic},{Automatic,Automatic}},GridLines -> {None,None},GridLinesStyle -> Directive[
+GrayLevel[0.5`,0.4`]],ImageSize -> 280,Method -> {"DefaultBoundaryStyle" -> Automatic,"DefaultGraphicsInteraction" -> {"Version" -> 1.2`,"TrackMousePosition" -> {True,False},"Effects" -> {"Highlight" -> {"ratio" -> 2},"HighlightPoint" -> {"ratio" -> 2},"Droplines" -> {"freeformCursorMode" -> True,"placement" -> {"x" -> "All","y" -> "None"}}}},"DefaultMeshStyle" -> AbsolutePointSize[
+6],"ScalingFunctions" -> None,"CoordinatesToolOptions" -> {"DisplayFunction" -> Function[
+{Function[Identity[Slot[1]]][Part[Slot[1],1]],Function[Identity[Slot[1]]][Part[Slot[
+1],2]]}],"CopiedValueFunction" -> Function[{Function[Identity[Slot[1]]][Part[Slot[
+1],1]],Function[Identity[Slot[1]]][Part[Slot[1],2]]}]}},PlotLabel -> FormBox[InterpretationBox[
+"\"Run \\!\\(\\*FormBox[\\\"2\\\", TraditionalForm]\\)  |  Spikes: \\!\\(\\*FormBox[\\\"0\\\", TraditionalForm]\\)\"",
+StringForm["Run ``  |  Spikes: ``",2,0],Editable -> False],TraditionalForm],PlotRange -> {{0.`,0.`},{-82.`,-48.`}},PlotRangeClipping -> True,PlotRangePadding -> {{Scaled[
+0.02`],Scaled[0.02`]},{Automatic,Automatic}},Ticks -> {Automatic,Automatic}}],{322.5`,-84.66581841349795`},
+ImageScaled[{0.5`,0.5`}],{200.`,154.3316368269959`},BaseStyle -> {Graphics3DBoxOptions -> {SphericalRegion -> False}}],InsetBox[
+GraphicsBox[{{{},{}}},{DisplayFunction -> Identity,ImagePadding -> {{21.548828125`,2.6296635841836746`},{14.34375`,17.34375`}},RuleDelayed[
+PlotInteractivity,True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},DisplayFunction -> Identity,RuleDelayed[
+PlotInteractivity,True],DisplayFunction -> Identity,Ticks -> {Automatic,Automatic},AxesOrigin -> {0,-48.00000000000011`},FrameTicks -> {{Automatic,Automatic},{Automatic,Automatic}},GridLines -> {None,None},RuleDelayed[
+PlotInteractivity,True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},DisplayFunction -> Identity,PlotRangePadding -> {{Scaled[
+0.02`],Scaled[0.02`]},{0,0}},PlotRangeClipping -> True,ImagePadding -> All,RuleDelayed[
+PlotInteractivity,True],DisplayFunction -> Identity,RuleDelayed[PlotInteractivity,
+True],DefaultBaseStyle -> {"PlotGraphics","Graphics"},AspectRatio -> NCache[Power[
+GoldenRatio,-1],0.6180339887498948`],Axes -> {True,True},AxesLabel -> {FormBox[TagBox[
+"\"Time (s)\"",HoldForm],TraditionalForm],FormBox[TagBox["\"V (mV)\"",HoldForm],TraditionalForm]},AxesOrigin -> {0,-82.`},RuleDelayed[
+DisplayFunction,Identity],Epilog -> {RGBColor[1,0,0],Dashing[{Small,Small}],TagBox[
+ConicHullRegionBox[{{0,-55.`},{1,-55.`}}],"InfiniteLine"]},Frame -> {{True,True},{True,True}},FrameLabel -> {{None,None},{None,None}},FrameTicks -> {{Automatic,Automatic},{Automatic,Automatic}},GridLines -> {None,None},GridLinesStyle -> Directive[
+GrayLevel[0.5`,0.4`]],ImageSize -> 280,Method -> {"DefaultBoundaryStyle" -> Automatic,"DefaultGraphicsInteraction" -> {"Version" -> 1.2`,"TrackMousePosition" -> {True,False},"Effects" -> {"Highlight" -> {"ratio" -> 2},"HighlightPoint" -> {"ratio" -> 2},"Droplines" -> {"freeformCursorMode" -> True,"placement" -> {"x" -> "All","y" -> "None"}}}},"DefaultMeshStyle" -> AbsolutePointSize[
+6],"ScalingFunctions" -> None,"CoordinatesToolOptions" -> {"DisplayFunction" -> Function[
+{Function[Identity[Slot[1]]][Part[Slot[1],1]],Function[Identity[Slot[1]]][Part[Slot[
+1],2]]}],"CopiedValueFunction" -> Function[{Function[Identity[Slot[1]]][Part[Slot[
+1],1]],Function[Identity[Slot[1]]][Part[Slot[1],2]]}]}},PlotLabel -> FormBox[InterpretationBox[
+"\"Run \\!\\(\\*FormBox[\\\"3\\\", TraditionalForm]\\)  |  Spikes: \\!\\(\\*FormBox[\\\"0\\\", TraditionalForm]\\)\"",
+StringForm["Run ``  |  Spikes: ``",3,0],Editable -> False],TraditionalForm],PlotRange -> {{0.`,0.`},{-82.`,-48.`}},PlotRangeClipping -> True,PlotRangePadding -> {{Scaled[
+0.02`],Scaled[0.02`]},{Automatic,Automatic}},Ticks -> {Automatic,Automatic}}],{537.5`,-84.66581841349795`},
+ImageScaled[{0.5`,0.5`}],{200.`,154.3316368269959`},BaseStyle -> {Graphics3DBoxOptions -> {SphericalRegion -> False}}]}},{}},
+{PlotRangePadding -> Automatic,PlotRange -> {{0,645.`},{-169.3316368269959`,0}},ImageSize -> {645.`,169.3316368269959`}},
+Method -> {"IgnoreImageSizeAutomaticLimit" -> True},ExpressionUUID -> "b7597ce4-fa18-4086-b336-0417dd35c7f3"],
+StandardForm],"Output",CellLabel -> "Out[109]= ",ExpressionUUID -> "d422a66b-421b-4973-bde0-1f26d775af0d"],Cell[
+TextData[
+{"Experiment"," ","3"," ","Observations"," ","\n","\n","What"," ","I"," ","changed",StyleBox[
+RowBox[{":"," "}]],"Replaced"," ","constant"," ","current",StyleBox[RowBox[{" ","("}]],"18"," ","nA",StyleBox[
+RowBox[{")"," "}]],"with"," ","a"," ","noisy"," ","version",StyleBox[RowBox[{":"," "}]],"18",".","0",StyleBox[
+RowBox[{" ","+"," "}]],"RandomReal","[{-","8",StyleBox[RowBox[{","," "}]],"8",StyleBox[
+RowBox[{"}],"," "}]],"which"," ","adds"," ","a"," ","random"," ","value"," ","between",StyleBox[
+RowBox[{" ","-"}]],"8"," ","and",StyleBox[RowBox[{" ","+"}]],"8"," ","nA",StyleBox[
+RowBox[{"."," "}]],"Ran"," ","the"," ","simulation"," ","3"," ","times",".","\n","\n","What"," ","I"," ","expected",StyleBox[
+RowBox[{":"," "}]],"Each"," ","run"," ","would"," ","produce"," ","a"," ","different"," ","spike"," ","pattern"," ","because"," ","the"," ","noise"," ","is"," ","random",".","\n","\n","What"," ","actually"," ","happened",StyleBox[
+RowBox[{":"," "}]],"Every"," ","run"," ","produced"," ","a"," ","different"," ","number"," ","of"," ","spikes"," ","and"," ","different"," ","spike"," ","timing",StyleBox[
+RowBox[{"."," "}]],"Sometimes"," ","the"," ","noise"," ","pushed"," ","current"," ","high"," ","enough"," ","to"," ","fire"," ","extra"," ","spikes",StyleBox[
+RowBox[{";"," "}]],"other"," ","times"," ","it"," ","dropped"," ","current"," ","low"," ","enough"," ","to"," ","skip"," ","spikes"," ","that"," ","would"," ","have"," ","occurred"," ","with"," ","constant"," ","input",StyleBox[
+RowBox[{"."," "}]],"No"," ","two"," ","runs"," ","were"," ","identical",".","\n","\n","Why"," ","this"," ","makes"," ","sense",StyleBox[
+RowBox[{":"," "}]],"RandomReal","[{-","8",StyleBox[RowBox[{","," "}]],"8",StyleBox[
+RowBox[{"}]"," "}]],"generates"," ","a"," ","new"," ","random"," ","number"," ","every"," ","time"," ","Wolfram"," ","evaluates"," ","it",StyleBox[
+RowBox[{","," "}]],"so"," ","each"," ","simulation"," ","run"," ","uses"," ","a"," ","completely"," ","different"," ","effective"," ","current",StyleBox[
+RowBox[{"."," "}]],"This"," ","models"," ","the"," ","biological"," ","reality"," ","of"," ","synaptic"," ","noise",StyleBox[
+RowBox[{" ","\[LongDash]"," "}]],"real"," ","neurons"," ","receive"," ","thousands"," ","of"," ","random"," ","synaptic"," ","inputs"," ","at"," ","any"," ","moment",StyleBox[
+RowBox[{","," "}]],"making"," ","their"," ","spike"," ","timing"," ","inherently"," ","variable",StyleBox[
+RowBox[{"."," "}]],"This"," ","variability"," ","is"," ","not"," ","a"," ","bug",StyleBox[
+RowBox[{";"," "}]],"it"," ","is"," ","thought"," ","to"," ","play"," ","an"," ","important"," ","role"," ","in"," ","neural"," ","coding"," ","and"," ","preventing"," ","synchrony"," ","across"," ","large"," ","populations"," ","of"," ","neurons","."}],
+"Text",ExpressionUUID -> "8882bd0a-40d5-48c7-b15c-44f05416527d"],Cell[
+TextData[{"PART"," ","F",StyleBox[
+RowBox[{" ","\[LongDash]"," "}]],"Final"," ","Reflection"," ","\n","Final"," ","Reflection","\n","\n","1",StyleBox[
+RowBox[{"."," "}]],"What"," ","happens"," ","as"," ","input"," ","current"," ","increases"," ","from"," ","below"," ","threshold"," ","to"," ","well"," ","above"," ","it","?","\n","\n","Below"," ","the"," ","rheobase",StyleBox[
+RowBox[{" ","(~"}]],"12"," ","nA",StyleBox[RowBox[{"),"," "}]],"the"," ","membrane"," ","potential"," ","rises"," ","but"," ","never"," ","reaches"," ","threshold",StyleBox[
+RowBox[{" ","\[LongDash]"," "}]],"it"," ","asymptotes"," ","to"," ","Vrest",StyleBox[
+RowBox[{" ","+"," "}]],"R","*","I"," ","which"," ","is"," ","below"," ","Vthresh",StyleBox[
+RowBox[{"."," "}]],"At"," ","the"," ","rheobase",StyleBox[RowBox[{","," "}]],"the"," ","neuron"," ","just"," ","barely"," ","fires",StyleBox[
+RowBox[{","," "}]],"producing"," ","one"," ","or"," ","a"," ","few"," ","spikes"," ","late"," ","in"," ","the"," ","stimulus"," ","window",StyleBox[
+RowBox[{"."," "}]],"Well"," ","above"," ","threshold",StyleBox[RowBox[{","," "}]],"the"," ","neuron"," ","fires"," ","rapidly"," ","from"," ","the"," ","moment"," ","current"," ","turns"," ","on",StyleBox[
+RowBox[{"."," "}]],"This"," ","reveals"," ","how"," ","neurons"," ","act"," ","as"," ","threshold"," ","devices",StyleBox[
+RowBox[{":"," "}]],"they"," ","produce"," ","no"," ","output"," ","below"," ","a"," ","critical"," ","input"," ","and"," ","a"," ","graded","-","rate"," ","output"," ","above"," ","it",StyleBox[
+RowBox[{"."," "}]],"Biologically",StyleBox[RowBox[{","," "}]],"this"," ","prevents"," ","neurons"," ","from"," ","responding"," ","to"," ","every"," ","small"," ","fluctuation",StyleBox[
+RowBox[{" ","("}]],"noise"," ","filtering",StyleBox[RowBox[{")"," "}]],"while"," ","ensuring"," ","reliable"," ","signaling"," ","for"," ","strong"," ","inputs",StyleBox[
+RowBox[{" ","\[LongDash]"," "}]],"a"," ","basic"," ","form"," ","of"," ","signal"," ","detection",".","\n","\n","2",StyleBox[
+RowBox[{"."," "}]],"Is"," ","the"," ","f","\[Dash]","I"," ","curve"," ","linear",StyleBox[
+RowBox[{"?"," "}]],"What"," ","is"," ","its"," ","biological"," ","significance","?","\n","\n","The"," ","f","\[Dash]","I"," ","curve"," ","is"," ","not"," ","linear",StyleBox[
+RowBox[{" ","\[LongDash]"," "}]],"it"," ","has"," ","a"," ","nonlinear"," ","onset",StyleBox[
+RowBox[{" ","("}]],"zero"," ","below"," ","rheobase",StyleBox[RowBox[{")"," "}]],"and"," ","a"," ","roughly"," ","linear"," ","middle"," ","range",StyleBox[
+RowBox[{"."," "}]],"A"," ","perfectly"," ","linear"," ","f","\[Dash]","I"," ","curve"," ","would"," ","mean"," ","the"," ","neuron"," ","encodes"," ","input"," ","strength"," ","with"," ","perfect"," ","proportionality",StyleBox[
+RowBox[{"."," "}]],"The"," ","actual"," ","shape"," ","means"," ","the"," ","neuron"," ","has"," ","a"," ","dynamic"," ","range",StyleBox[
+RowBox[{":"," "}]],"too"," ","little"," ","input"," ","produces"," ","silence",StyleBox[
+RowBox[{";"," "}]],"moderate"," ","inputs"," ","produce"," ","graded"," ","rate"," ","responses",StyleBox[
+RowBox[{";"," "}]],"very"," ","high"," ","inputs"," ","may"," ","saturate",StyleBox[
+RowBox[{"."," "}]],"Neuroscientists"," ","use"," ","f","\[Dash]","I"," ","curve"," ","shape"," ","to"," ","classify"," ","cell"," ","types",StyleBox[
+RowBox[{" ","\[LongDash]"," "}]],"some"," ","neurons"," ","have"," ","steep"," ","curves",StyleBox[
+RowBox[{" ","("}]],"high"," ","gain",StyleBox[RowBox[{")"," "}]],"while"," ","others"," ","are"," ","flat",StyleBox[
+RowBox[{" ","("}]],"low"," ","gain",StyleBox[RowBox[{","," "}]],"integrators",").","\n","\n","3",StyleBox[
+RowBox[{"."," "}]],"How"," ","does"," ","membrane"," ","time"," ","constant"," ","affect"," ","firing",StyleBox[
+RowBox[{"?"," "}]],"What"," ","do"," ","short"," ","vs",StyleBox[RowBox[{"."," "}]],"long"," ","tau"," ","neurons"," ","do","?","\n","\n","Short"," ","tau",StyleBox[
+RowBox[{" ","\[RightArrow]"," "}]],"fast"," ","charging",StyleBox[RowBox[{" ","\[RightArrow]"," "}]],"higher"," ","firing"," ","rates",StyleBox[
+RowBox[{" ","\[RightArrow]"," "}]],"good"," ","for"," ","temporal"," ","precision",StyleBox[
+RowBox[{" ","("}]],"e",".","g",StyleBox[RowBox[{".,"," "}]],"auditory"," ","brainstem"," ","neurons"," ","that"," ","localize"," ","sound"," ","using"," ","microsecond"," ","timing",StyleBox[
+RowBox[{")."," "}]],"Long"," ","tau",StyleBox[RowBox[{" ","\[RightArrow]"," "}]],"slow"," ","integration",StyleBox[
+RowBox[{" ","\[RightArrow]"," "}]],"lower"," ","firing"," ","rate"," ","but"," ","the"," ","neuron",StyleBox[
+RowBox[{" ","\""}]],"remembers",StyleBox[RowBox[{"\""," "}]],"input"," ","over"," ","a"," ","longer"," ","window",StyleBox[
+RowBox[{" ","\[RightArrow]"," "}]],"good"," ","for"," ","temporal"," ","summation",StyleBox[
+RowBox[{" ","("}]],"e",".","g",StyleBox[RowBox[{".,"," "}]],"working"," ","memory"," ","neurons"," ","in"," ","prefrontal"," ","cortex"," ","that"," ","maintain"," ","information"," ","across"," ","seconds",").","\n","\n","4",StyleBox[
+RowBox[{"."," "}]],"LIF"," ","model",StyleBox[RowBox[{":"," "}]],"what"," ","does"," ","it"," ","capture"," ","well",StyleBox[
+RowBox[{","," "}]],"and"," ","what"," ","does"," ","it"," ","miss","?","\n","\n","Captures"," ","well",StyleBox[
+RowBox[{":"," "}]],"The"," ","essential"," ","threshold","-","and","-","fire"," ","dynamic",StyleBox[
+RowBox[{";"," "}]],"rate"," ","coding",StyleBox[RowBox[{";"," "}]],"the"," ","effects"," ","of"," ","membrane"," ","resistance"," ","and"," ","time"," ","constant",StyleBox[
+RowBox[{";"," "}]],"the"," ","basic"," ","f","\[Dash]","I"," ","relationship",StyleBox[
+RowBox[{";"," "}]],"how"," ","sustained"," ","current"," ","produces"," ","regular"," ","spike"," ","trains",".","\n","\n","Misses",StyleBox[
+RowBox[{":"," "}]],"Dendrite"," ","morphology",StyleBox[RowBox[{" ","\[LongDash]"," "}]],"real"," ","neurons"," ","spatially"," ","integrate"," ","inputs"," ","across"," ","a"," ","complex"," ","dendritic"," ","tree",StyleBox[
+RowBox[{";"," "}]],"Multiple"," ","ion"," ","channels",StyleBox[RowBox[{" ","\[LongDash]"," "}]],"HH","-","type"," ","models"," ","include"," ","voltage","-","gated"," ","Na","\:207a/","K",StyleBox[
+RowBox[{"\:207a"," "}]],"dynamics"," ","that"," ","create"," ","a"," ","true"," ","action"," ","potential"," ","shape",StyleBox[
+RowBox[{" ","("}]],"the"," ","LIF"," ","spike"," ","is"," ","just"," ","a"," ","reset",StyleBox[
+RowBox[{");"," "}]],"Spike"," ","adaptation",StyleBox[RowBox[{" ","\[LongDash]"," "}]],"real"," ","neurons"," ","show"," ","rate"," ","adaptation",StyleBox[
+RowBox[{" ","("}]],"slowing"," ","over"," ","time",StyleBox[RowBox[{")"," "}]],"due"," ","to"," ","slow"," ","K",StyleBox[
+RowBox[{"\:207a"," "}]],"channels",StyleBox[RowBox[{";"," "}]],"Neurotransmitter"," ","dynamics",StyleBox[
+RowBox[{" ","\[LongDash]"," "}]],"synaptic"," ","conductances"," ","have"," ","rise","/","decay"," ","kinetics",StyleBox[
+RowBox[{";"," "}]],"Bursting"," ","and"," ","oscillatory"," ","behavior",StyleBox[
+RowBox[{" ","\[LongDash]"," "}]],"some"," ","neurons"," ","burst"," ","intrinsically",StyleBox[
+RowBox[{";"," "}]],"Dendritic"," ","computation",StyleBox[RowBox[{" ","\[LongDash]"," "}]],"nonlinear"," ","dendritic"," ","integration"," ","can"," ","compute"," ","AND","/","OR"," ","logic",StyleBox[
+RowBox[{","," "}]],"impossible"," ","in"," ","a"," ","point"," ","neuron",".","\n","\n","5",StyleBox[
+RowBox[{"."," "}]],"How"," ","did"," ","Manipulate",StyleBox[RowBox[{"[]"," "}]],"change"," ","your"," ","understanding","?","\n","\n","Interactive"," ","exploration"," ","revealed"," ","something"," ","static"," ","reading"," ","cannot",StyleBox[
+RowBox[{":"," "}]],"the"," ","sharpness"," ","of"," ","transitions",StyleBox[RowBox[
+{"."," "}]],"Reading"," ","that",StyleBox[RowBox[{" ","\""}]],"the"," ","neuron"," ","fires"," ","more"," ","as"," ","current"," ","increases",StyleBox[
+RowBox[{"\""," "}]],"sounds"," ","gradual",StyleBox[RowBox[{","," "}]],"but"," ","the"," ","dashboard"," ","showed"," ","that"," ","there's"," ","an"," ","almost"," ","discontinuous"," ","jump"," ","at"," ","the"," ","rheobase",StyleBox[
+RowBox[{" ","\[LongDash]"," "}]],"nothing",StyleBox[RowBox[{","," "}]],"then"," ","suddenly"," ","regular"," ","spiking",StyleBox[
+RowBox[{"."," "}]],"Similarly",StyleBox[RowBox[{","," "}]],"dragging"," ","the"," ","tau"," ","slider"," ","showed"," ","me"," ","that",StyleBox[
+RowBox[{" ","\""}]],"slower"," ","time"," ","constant",StyleBox[RowBox[{" ","\[RightArrow]"," "}]],"fewer"," ","spikes",StyleBox[
+RowBox[{"\""," "}]],"is"," ","not"," ","just"," ","quantitative"," ","but"," ","qualitative",StyleBox[
+RowBox[{":"," "}]],"the"," ","entire"," ","shape"," ","of"," ","the"," ","membrane"," ","potential"," ","trace"," ","changes"," ","from"," ","sharp"," ","sawtooth"," ","to"," ","smooth"," ","sinusoid","-","like"," ","curves",StyleBox[
+RowBox[{"."," "}]],"The"," ","most"," ","surprising"," ","finding"," ","was"," ","how"," ","sensitive"," ","firing"," ","rate"," ","is"," ","to"," ","threshold"," ","in"," ","the"," ","middle"," ","range",StyleBox[
+RowBox[{" ","\[LongDash]"," "}]],"moving"," ","threshold"," ","by"," ","just"," ","2","\[Dash]","3"," ","mV"," ","near"," ","the"," ","operating"," ","point"," ","could"," ","double"," ","or"," ","halve"," ","the"," ","spike"," ","count",StyleBox[
+RowBox[{","," "}]],"suggesting"," ","real"," ","neurons"," ","are"," ","exquisitely"," ","tuned"," ","near"," ","their"," ","operating"," ","threshold","."}],
+"Text",ExpressionUUID -> "5b7e1f64-be99-4934-a15b-ec69ba584cfa"]},StyleDefinitions -> "Default.nb",
+FrontEndVersion -> "14.3 for Wolfram Cloud 1.75 (December 9, 2025)"]
