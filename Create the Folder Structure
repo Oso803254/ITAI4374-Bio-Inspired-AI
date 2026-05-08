@@ -1,0 +1,5 @@
+# Create all the folders at once
+mkdir -p Labs/Lab02a
+mkdir -p Labs/Lab03
+mkdir -p Assignments/Assignment01
+mkdir -p Assignments/Midterm
